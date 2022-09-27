@@ -8,38 +8,38 @@ import '../../povider/provider.dart';
 
 class DetailPage extends ConsumerWidget {
   const DetailPage({
-    Key? key, required this.pokeId, required this.userId
+    Key? key, required this.pokemon, required this.userId
   }) : super(key: key);
-  final int pokeId;
+  final Pokemon pokemon;
   final int userId;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pokeDetail = ref.watch(pokeByIdProvider(pokeId));
+    final pokeDetail = ref.watch(pokeByIdProvider(pokemon.pokeId));
     final Size size = MediaQuery.of(context).size;
     final faValue = ref.watch(favProvider(userId));
+    String mess='';
     int count =0;
     List<Pokemon> listPokeFav=[];
     faValue.when(data: (data){
       listPokeFav = data;
-    }, error: (e, stack){}, loading: (){});
+    }, error: (e, stack){print(e);}, loading: (){print('getting favourite list!');});
+    listPokeFav.forEach((element) {
+        if(pokemon.pokeId == element.pokeId){
+          count =1;
+        };
+      }
+    );
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xffF3F9EF),
         elevation: 2,
         leading: IconButton(icon:Icon(Icons.arrow_back_ios), color: Color(0xffCC000000), onPressed: () {
           Navigator.pop(context);
+          ref.refresh(favProvider(userId));
         },),
       ),
-      body:pokeDetail.when(data: (data){
-        listPokeFav.forEach((element) {
-          if(data.pokeId == element.pokeId){
-            count =1;
-          }
-        });
-        final addPokeToFav = ref.watch(addPokeToFavProvider(myParamsUserIdPoke(userId: userId, poke: data)));
-        final removePokeFormFav = ref.watch(removePokeFromPavProvider(myParamsUserIdPoke(userId: userId, poke: data)));
-        String mess='';
-        return Stack(
+      body: Stack(
           children: [
             Container(
                 child: Column(
@@ -53,16 +53,16 @@ class DetailPage extends ConsumerWidget {
                     Container(
                       child: Column(crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: [
                         Container(child: Column( crossAxisAlignment: CrossAxisAlignment.start,children: [
-                          Text(data.name, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30, color: AppColors.textColor),),
-                          Text(data.class1, style: TextStyle(color: AppColors.textColor, fontSize: 16, fontWeight: FontWeight.w500),)
+                          Text(pokemon.name, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30, color: AppColors.textColor),),
+                          Text(pokemon.class1, style: TextStyle(color: AppColors.textColor, fontSize: 16, fontWeight: FontWeight.w500),)
                         ],)),
-                        Text('#${data.pokeId}')
+                        Text('#${pokemon.pokeId}')
 
                       ],),
                       margin: EdgeInsets.only(top: 20, left: 20, bottom: 20),
                     ),
                     Container(height: 125,margin: EdgeInsets.only(bottom: 20, right: 20),child:
-                      Image.network(data.image),)
+                      Image.network(pokemon.image),)
                   ],
                 ),),
                 Container(width: size.width,height: size.height*0.1,color: Colors.white,child:
@@ -76,21 +76,21 @@ class DetailPage extends ConsumerWidget {
                             height: size.height*0.05,
                             child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: [
                               Text('Height', style: TextStyle(color: AppColors.lightTextColor, fontSize: 12),),
-                              Text(data.height.toString(), style: TextStyle(color: AppColors.textColor, fontWeight: FontWeight.w500),)
+                              Text(pokemon.height.toString(), style: TextStyle(color: AppColors.textColor, fontWeight: FontWeight.w500),)
                             ],),
                           ),
                           Container(
                             height: size.height*0.05,
                             child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: [
                               Text('Weight', style: TextStyle(color: AppColors.lightTextColor, fontSize: 12),),
-                              Text(data.weight.toString(), style: TextStyle(color: AppColors.textColor, fontWeight: FontWeight.w500),)
+                              Text(pokemon.weight.toString(), style: TextStyle(color: AppColors.textColor, fontWeight: FontWeight.w500),)
                             ],),
                           ),
                           Container(
                             height: size.height*0.05,
                             child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: [
                               Text('Heightx', style: TextStyle(color: AppColors.lightTextColor, fontSize: 12),),
-                              Text(data.height.toString(), style: TextStyle(color: AppColors.textColor, fontWeight: FontWeight.w500),)
+                              Text(pokemon.height.toString(), style: TextStyle(color: AppColors.textColor, fontWeight: FontWeight.w500),)
                             ],),
                           )
                         ],),
@@ -109,14 +109,18 @@ class DetailPage extends ConsumerWidget {
               ],
             )),
             Positioned(bottom: 40, right: 20 ,child: InkWell(
-              onTap: (){
+              onTap: () {
                 if(count ==0){
                   //add
-                  addPokeToFav.when(data: (data){mess = 'add success!';print(mess);}, error: (e, stack){mess = 'error: ${e.toString()}'; print(mess);}, loading: (){mess='adding';print(mess);});
+                  ref.watch(addPokeToFavProvider(myParamsUserIdPoke(userId: userId, poke: pokemon)));
+                  //addPokeToFav.when(data: (data){mess = 'add success!';print(mess);}, error: (e, stack){mess = 'error: ${e.toString()}'; print(mess);}, loading: (){mess='adding';print(mess);});
                   ref.refresh(favProvider(userId));
+                  // ref.refresh(pokeByIdProvider(pokeId));
                 }else{
                  //delete
-                  removePokeFormFav.when(data: (data){mess = 'remove success!';print(mess);}, error: (e, stack){mess = 'error: ${e.toString()}'; print(mess);}, loading: (){mess='adding';print(mess);});
+                  ref.watch(removePokeFromPavProvider(myParamsUserIdPoke(userId: userId, poke: pokemon)));
+                 //  removePokeFormFav.when(data: (data){mess = 'remove success!';print(mess);}, error: (e, stack){mess = 'error: ${e.toString()}'; print(mess);}, loading: (){mess='adding';print(mess);});
+                  // ref.refresh(pokeByIdProvider(pokeId));
                   ref.refresh(favProvider(userId));
                 }
               },
@@ -134,9 +138,7 @@ class DetailPage extends ConsumerWidget {
               ),
             ))
           ],
-        );
-      }, error: (e, stack){print(e.toString());}, loading: (){return Text('loading');}),
+        )
     );
-
   }
 }

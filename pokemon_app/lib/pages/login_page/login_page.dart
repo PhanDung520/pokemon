@@ -2,21 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokemon_app/models/user.dart';
 import 'package:pokemon_app/pages/home_page/home_page.dart';
+import 'package:pokemon_app/pages/login_page/components/dialog.dart';
 import 'package:pokemon_app/values/app_colors.dart';
 
 import '../../povider/provider.dart';
 
 
 class LoginPage extends ConsumerWidget {
-  const LoginPage({
+  LoginPage({
     Key? key,
   }) : super(key: key);
-
+  final TextEditingController controller1 = TextEditingController();
+  final TextEditingController controller2 = TextEditingController();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final Size size = MediaQuery.of(context).size;
-    final TextEditingController controller1 = TextEditingController();
-    final TextEditingController controller2 = TextEditingController();
+
     final valueUser = ref.watch(userGetProvider);
     List<User>? listData;
     valueUser.when(data: (data){
@@ -52,6 +53,9 @@ class LoginPage extends ConsumerWidget {
                     Container(
                       margin: EdgeInsets.only(top: 15),
                       child: TextField(
+                        obscureText: true,
+                        enableSuggestions: false,
+                        autocorrect: false,
                         controller: controller2,
                         decoration: InputDecoration(
                             hintText: 'Password',
@@ -71,7 +75,7 @@ class LoginPage extends ConsumerWidget {
                           }
                         }
                         if(count == 0){
-                          print('error login');
+                          showAlertDialog(context);
                         }
                       },
                       child: Container(width: size.width, height: 50, alignment: Alignment.center, margin: EdgeInsets.only(top: 40),child: Text('Login', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),),decoration: BoxDecoration(

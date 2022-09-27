@@ -6,23 +6,6 @@ import '../utils/utils.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 part 'provider.freezed.dart';
 
-// Future<List<User>> getListUser() async{
-//   List<User> listUser = [];
-//   firestore.collection('users').get().then((value) => {
-//     value.docs.forEach((element) {
-//       User user = User(element['username'], element['password'], element['password']);
-//       listUser.add(user);
-//     })
-//   });
-//   return listUser;
-// }
-//
-// Future<List<User>> createListUser()async{
-//   var list = await getListUser();
-//   return list;
-// }
-
-
 final userGetProvider = FutureProvider<List<User>>((ref) async {
   List<User> listUser = [];
   await firestore.collection('users').get().then((value) => {
@@ -34,25 +17,17 @@ final userGetProvider = FutureProvider<List<User>>((ref) async {
   return listUser;
 });
 
-// final favProvider = FutureProvider.family<List<Pokemon>, int>((ref,userId){
-//   List<Pokemon> listFa = [];
-//   firestore.collection('users').doc(userId.toString()).collection('favourite').get().then((value) =>
-//   {
-//     value.docs.forEach((element) {
-//       listFa.add(Pokemon(element['class'], element['attack'], element['height'], element['hp'], element['id'], element['image'], element['name'], element['speed'], element['weight']));
-//     })
-//   });
-//   return listFa;
-// });
-
 Stream<List<Pokemon>> getListFa(int userId) async*{
   List<Pokemon> listFa = [];
   List<int> listPokeId =[];
   //getDociD
   await firestore.collection('users').doc(userId.toString()).collection('favourite').get().then((value) => {
     value.docs.forEach((element) {
-      print('docId: ${element.id}');
-      listPokeId.add(int.parse(element.id));
+      int i = int.parse(element.id);
+      if(i <100){
+        print('docId: $i');
+        listPokeId.add(i);
+      }
     })
   });
   List<Future> listF = [];
@@ -112,5 +87,6 @@ final addPokeToFavProvider = FutureProvider.family<void, myParamsUserIdPoke>((re
 
 final removePokeFromPavProvider = FutureProvider.family<void, myParamsUserIdPoke>((ref, params) async {
   DocumentReference doc_ref = firestore.collection('users').doc(params.userId.toString()).collection('favourite').doc(params.poke.pokeId.toString());
+  print('pekedeleted: ${params.poke.pokeId}');
   return doc_ref.delete();
 });

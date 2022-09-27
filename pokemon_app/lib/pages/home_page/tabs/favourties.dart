@@ -23,7 +23,7 @@ class FavourtiesTab extends ConsumerWidget {
         child: GridView.count(physics: BouncingScrollPhysics(),childAspectRatio: (size.width*0.5/ 250),crossAxisCount: 2, crossAxisSpacing: 8.0, mainAxisSpacing: 8.0, children: List.generate(data.length, (index) {
           return InkWell(
             onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>DetailPage(pokeId: data[index].pokeId, userId: userId,)));
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>DetailPage(pokemon: data[index], userId: userId,)));
             },
             child: Container( child: Column(crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.spaceAround,children: [
               Container(child: Image.network(data[index].image),height: 100,width: size.width*0.6,),

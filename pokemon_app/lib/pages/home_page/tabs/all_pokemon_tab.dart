@@ -23,7 +23,7 @@ class AllPokemonTab extends ConsumerWidget {
           return InkWell(
             onTap: (){
               //move to details
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>DetailPage(pokeId: data[index].pokeId, userId: userId,)));
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>DetailPage(pokemon: data[index], userId: userId,)));
             },
             child: Container( child: Column(crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.spaceAround,children: [
               Container(child: Image.network(data[index].image),height: 100,width: size.width*0.6,),
