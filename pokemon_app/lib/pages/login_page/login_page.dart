@@ -17,8 +17,8 @@ class LoginPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final Size size = MediaQuery.of(context).size;
-
     final valueUser = ref.watch(userGetProvider);
+    final isLogin = ref.watch(isLoginProvider);
     List<User>? listData;
     valueUser.when(data: (data){
       listData = data;
@@ -64,14 +64,17 @@ class LoginPage extends ConsumerWidget {
                       ),
                     ),
                     InkWell(
-                      onTap: (){
+                      onTap: () async {
                         String username = controller1.text;
                         String password = controller2.text;
                         int count =0;
-                        for(User user in listData!){
+                        for(User user in listData!) {
                           if(user.name == username && user.password == password){
+                            showProgessCir(context);
+                            await Future.delayed(Duration(seconds: 1));
                             Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage(userId: user.userId)));
                             count =1;
+                            // ref.read(isLogin.notifier).state = 1;
                           }
                         }
                         if(count == 0){

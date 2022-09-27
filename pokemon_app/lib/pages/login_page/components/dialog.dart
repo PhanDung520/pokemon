@@ -27,4 +27,18 @@ showAlertDialog(BuildContext context) {
     },
   );
 }
+showProgessCir(BuildContext context) {
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Center(child: CircularProgressIndicator(),);
+    },
+  );
+}
+
+
+
+
+
 

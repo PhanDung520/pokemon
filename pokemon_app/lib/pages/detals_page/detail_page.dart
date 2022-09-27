@@ -14,21 +14,9 @@ class DetailPage extends ConsumerWidget {
   final int userId;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pokeDetail = ref.watch(pokeByIdProvider(pokemon.pokeId));
     final Size size = MediaQuery.of(context).size;
     final faValue = ref.watch(favProvider(userId));
-    String mess='';
-    int count =0;
-    List<Pokemon> listPokeFav=[];
-    faValue.when(data: (data){
-      listPokeFav = data;
-    }, error: (e, stack){print(e);}, loading: (){print('getting favourite list!');});
-    listPokeFav.forEach((element) {
-        if(pokemon.pokeId == element.pokeId){
-          count =1;
-        };
-      }
-    );
+    int count = logic_code(faValue);
 
     return Scaffold(
       appBar: AppBar(
@@ -140,5 +128,20 @@ class DetailPage extends ConsumerWidget {
           ],
         )
     );
+  }
+
+  int logic_code(AsyncValue<List<Pokemon>> faValue) {
+    int count =0;
+    List<Pokemon> listPokeFav=[];
+    faValue.when(data: (data){
+      listPokeFav = data;
+    }, error: (e, stack){print(e);}, loading: (){print('getting favourite list!');});
+    listPokeFav.forEach((element) {
+        if(pokemon.pokeId == element.pokeId){
+          count =1;
+        };
+      }
+    );
+    return count;
   }
 }

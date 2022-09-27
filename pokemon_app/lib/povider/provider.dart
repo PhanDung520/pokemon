@@ -90,3 +90,8 @@ final removePokeFromPavProvider = FutureProvider.family<void, myParamsUserIdPoke
   print('pekedeleted: ${params.poke.pokeId}');
   return doc_ref.delete();
 });
+
+final isLoginProvider = StateProvider((ref) {
+  return 0;
+});
+
