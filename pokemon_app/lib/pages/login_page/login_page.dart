@@ -4,8 +4,7 @@ import 'package:pokemon_app/models/user.dart';
 import 'package:pokemon_app/pages/home_page/home_page.dart';
 import 'package:pokemon_app/pages/login_page/components/dialog.dart';
 import 'package:pokemon_app/values/app_colors.dart';
-
-import '../../povider/provider.dart';
+import 'login_controller.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({
@@ -28,6 +27,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     super.dispose();
   }
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    List<User> listUser=[];
+    initUser(listUser);
+    ref.read(listDataProvider.notifier).state = listUser;
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     ref.read(listDataProvider.notifier).state = ref.watch(userGetProvider);

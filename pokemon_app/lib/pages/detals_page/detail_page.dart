@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokemon_app/models/pokemon.dart';
 import 'package:pokemon_app/models/user.dart';
 import 'package:pokemon_app/values/app_colors.dart';
-
-import '../../povider/provider.dart';
+import '../home_page/home_controller.dart';
+import 'detail_controller.dart';
 
 class DetailPage extends ConsumerWidget {
   const DetailPage({

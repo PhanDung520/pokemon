@@ -46,4 +46,4 @@ app.*.map.json
 /android/app/release
 
 #custom ignore
-lib/povider/provider.freezed.dart
+lib/pages/detals_page/detail_controller.freezed.dart
