@@ -7,7 +7,7 @@ import 'package:pokemon_app/values/app_colors.dart';
 import '../../models/user.dart';
 import '../../povider/provider.dart';
 
-class HomePage extends ConsumerWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({
     Key? key, required this.userId
   }) : super(key: key);
@@ -15,8 +15,13 @@ class HomePage extends ConsumerWidget {
 
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final favValue = ref.watch(favProvider(userId));
+  ConsumerState createState() => _HomePageState();
+}
+
+class _HomePageState extends ConsumerState<HomePage> {
+  @override
+  Widget build(BuildContext context) {
+    final favValue = ref.watch(favProvider(widget.userId));
     int num =0;
     favValue.when(data: (data){num=data.length;}, error: (e, stack){}, loading: (){});
     return DefaultTabController(
@@ -34,31 +39,31 @@ class HomePage extends ConsumerWidget {
                 child: Text('All Pokemon', style: TextStyle(color: AppColors.textColor, fontSize: 16, fontWeight: FontWeight.w500),),
               ),
               Tab(child:
-                Row(
-                  children: [
-                    const Text('Favourites', style: TextStyle(fontSize: 16, color: AppColors.textColor, fontWeight: FontWeight.w500),),
-                    Visibility(
-                      visible: true,
-                      child: Container(
-                        width: 15,
-                        height: 15,
-                        margin: EdgeInsets.only(bottom: 10, left: 2),
-                        alignment: Alignment.center,
-                        child: Text(num.toString(), style: TextStyle(color: Colors.white, fontSize: 11),),
-                        decoration: BoxDecoration(
+              Row(
+                children: [
+                  const Text('Favourites', style: TextStyle(fontSize: 16, color: AppColors.textColor, fontWeight: FontWeight.w500),),
+                  Visibility(
+                    visible: true,
+                    child: Container(
+                      width: 15,
+                      height: 15,
+                      margin: EdgeInsets.only(bottom: 10, left: 2),
+                      alignment: Alignment.center,
+                      child: Text(num.toString(), style: TextStyle(color: Colors.white, fontSize: 11),),
+                      decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
                           color: AppColors.primaryColor
-                        ),
                       ),
-                    )
-                  ],
-                ),)
+                    ),
+                  )
+                ],
+              ),)
             ],
           ),
         ),
         body: TabBarView(children: [
-          AllPokemonTab(userId: userId,),
-          FavourtiesTab(userId: userId,),
+          AllPokemonTab(userId: widget.userId,),
+          FavourtiesTab(userId: widget.userId,),
         ],),
       ),
 

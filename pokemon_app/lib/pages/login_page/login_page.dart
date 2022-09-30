@@ -7,16 +7,21 @@ import 'package:pokemon_app/values/app_colors.dart';
 
 import '../../povider/provider.dart';
 
-
-class LoginPage extends ConsumerWidget {
-  LoginPage({
+class LoginPage extends ConsumerStatefulWidget {
+  const LoginPage({
     Key? key,
   }) : super(key: key);
+
+  @override
+  ConsumerState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends ConsumerState<LoginPage> {
   final TextEditingController controller1 = TextEditingController();
   final TextEditingController controller2 = TextEditingController();
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final Size size = MediaQuery.of(context).size;
+  Widget build(BuildContext context) {
     final valueUser = ref.watch(userGetProvider);
     final isLogin = ref.watch(isLoginProvider);
     List<User>? listData;
@@ -32,14 +37,14 @@ class LoginPage extends ConsumerWidget {
         child: Column(
           children: [
             SizedBox(
-              width: size.width,
+              width: MediaQuery.of(context).size.width,
               child: Image.asset('assets/images/blob_bg.png'),
             ),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 30),
               margin: EdgeInsets.only(top: 20),
-              width: size.width,
-              height: size.height*0.4,
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height*0.4,
               child: SingleChildScrollView(
                 child: Column(
                   children: [
@@ -81,7 +86,7 @@ class LoginPage extends ConsumerWidget {
                           showAlertDialog(context);
                         }
                       },
-                      child: Container(width: size.width, height: 50, alignment: Alignment.center, margin: EdgeInsets.only(top: 40),child: Text('Login', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),),decoration: BoxDecoration(
+                      child: Container(width: MediaQuery.of(context).size.width, height: 50, alignment: Alignment.center, margin: EdgeInsets.only(top: 40),child: Text('Login', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),),decoration: BoxDecoration(
                           color: AppColors.primaryColor,
                           borderRadius: BorderRadius.circular(20)
                       ),),
@@ -94,5 +99,6 @@ class LoginPage extends ConsumerWidget {
         ),
       ),
     );
+
   }
 }

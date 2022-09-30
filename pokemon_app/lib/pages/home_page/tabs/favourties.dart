@@ -6,16 +6,21 @@ import '../../../povider/provider.dart';
 import '../../../values/app_colors.dart';
 import '../../detals_page/detail_page.dart';
 
-class FavourtiesTab extends ConsumerWidget {
+class FavourtiesTab extends ConsumerStatefulWidget {
   const FavourtiesTab({
     Key? key, required this.userId
   }) : super(key: key);
   final int userId;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState createState() => _FavourtiesTabState();
+}
+
+class _FavourtiesTabState extends ConsumerState<FavourtiesTab> {
+  @override
+  Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    final favValue = ref.watch(favProvider(userId));
+    final favValue = ref.watch(favProvider(widget.userId));
     return favValue.when(data: (data){
       print('success!');
       return Container(
@@ -23,7 +28,7 @@ class FavourtiesTab extends ConsumerWidget {
         child: GridView.count(physics: BouncingScrollPhysics(),childAspectRatio: (size.width*0.5/ 250),crossAxisCount: 2, crossAxisSpacing: 8.0, mainAxisSpacing: 8.0, children: List.generate(data.length, (index) {
           return InkWell(
             onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>DetailPage(pokemon: data[index], userId: userId,)));
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>DetailPage(pokemon: data[index], userId: widget.userId,)));
             },
             child: Container( child: Column(crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.spaceAround,children: [
               Container(child: Image.network(data[index].image),height: 100,width: size.width*0.6,),
@@ -42,6 +47,5 @@ class FavourtiesTab extends ConsumerWidget {
           );
         }),),
       );
-    }, error: (e, stack){ return Text(e.toString());}, loading: (){return Text('Loading');});
-  }
+    }, error: (e, stack){ return Text(e.toString());}, loading: (){return Text('Loading');});  }
 }
