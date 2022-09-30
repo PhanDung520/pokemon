@@ -5,14 +5,19 @@ import 'package:pokemon_app/values/app_colors.dart';
 import '../../detals_page/detail_page.dart';
 import '../home_controller.dart';
 
-class AllPokemonTab extends ConsumerWidget {
+class AllPokemonTab extends ConsumerStatefulWidget {
   const AllPokemonTab({
     Key? key, required this.userId
   }) : super(key: key);
   final int userId;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState createState() => _AllPokemonTabState();
+}
+
+class _AllPokemonTabState extends ConsumerState<AllPokemonTab> {
+  @override
+  Widget build(BuildContext context) {
     final listPoke = ref.watch(pokeGetProvider);
     return listPoke.when(data: (data){
       return Container(
@@ -21,7 +26,7 @@ class AllPokemonTab extends ConsumerWidget {
           return InkWell(
             onTap: (){
               //move to details
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>DetailPage(pokemon: data[index], userId: userId,)));
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>DetailPage(pokemon: data[index], userId: widget.userId,)));
             },
             child: Container( child: Column(crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.spaceAround,children: [
               Container(child: Image.network(data[index].image),height: 100,width: MediaQuery.of(context).size.width*0.6,),
@@ -31,10 +36,10 @@ class AllPokemonTab extends ConsumerWidget {
                 Container(child: Text(data[index].class1, style: TextStyle(color: AppColors.lightTextColor, fontSize: 14),),)
               ],),)
             ],),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-            ),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
           );
         }),),
@@ -44,3 +49,4 @@ class AllPokemonTab extends ConsumerWidget {
     }, loading: (){return Text('Loading');});
   }
 }
+
