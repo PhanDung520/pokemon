@@ -31,7 +31,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   void initState() {
     // TODO: implement initState
     List<User> listUser=[];
-    initUser(listUser);
+    initUser(listUser);//get data
     ref.read(listDataProvider.notifier).state = listUser;
     super.initState();
   }
