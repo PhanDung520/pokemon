@@ -66,7 +66,6 @@ class _HomePageState extends ConsumerState<HomePage> {
           FavourtiesTab(userId: widget.userId,),
         ],),
       ),
-
     );
   }
 }

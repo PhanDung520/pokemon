@@ -6,16 +6,32 @@ import '../utils/utils.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 part 'provider.freezed.dart';
 
-final userGetProvider = FutureProvider<List<User>>((ref) async {
-  List<User> listUser = [];
+final listDataProvider = StateProvider<List<User>>((ref) =>[]);
+Future<void> initUser(List<User> listUser) async{
   await firestore.collection('users').get().then((value) => {
     value.docs.forEach((element) {
       User user = User(element['username'], element['password'], element['userId']);
       listUser.add(user);
     })
   });
+}
+
+final userGetProvider = Provider<List<User>>((ref) {
+  List<User> listUser = [];
+  initUser(listUser);
   return listUser;
 });
+
+// final userGetProvider = FutureProvider<List<User>>((ref) async {
+//   List<User> listUser = [];
+//   await firestore.collection('users').get().then((value) => {
+//     value.docs.forEach((element) {
+//       User user = User(element['username'], element['password'], element['userId']);
+//       listUser.add(user);
+//     })
+//   });
+//   return listUser;
+// });
 
 Stream<List<Pokemon>> getListFa(int userId) async*{
   List<Pokemon> listFa = [];
@@ -89,9 +105,5 @@ final removePokeFromPavProvider = FutureProvider.family<void, myParamsUserIdPoke
   DocumentReference doc_ref = firestore.collection('users').doc(params.userId.toString()).collection('favourite').doc(params.poke.pokeId.toString());
   print('pekedeleted: ${params.poke.pokeId}');
   return doc_ref.delete();
-});
-
-final isLoginProvider = StateProvider((ref) {
-  return 0;
 });
 

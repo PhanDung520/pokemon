@@ -21,16 +21,16 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   final TextEditingController controller2 = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
-    final valueUser = ref.watch(userGetProvider);
-    final isLogin = ref.watch(isLoginProvider);
-    List<User>? listData;
-    valueUser.when(data: (data){
-      listData = data;
-    }, error: (e, stack){
-      return Text(e.toString());
-    }, loading: (){return Text('Loading');});
+  void dispose() {
+    // TODO: implement dispose
+    controller1.dispose();
+    controller2.dispose();
+    super.dispose();
+  }
 
+  @override
+  Widget build(BuildContext context) {
+    ref.read(listDataProvider.notifier).state = ref.watch(userGetProvider);
     return Scaffold(
       body: SingleChildScrollView(
         physics: NeverScrollableScrollPhysics(),
@@ -73,7 +73,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         String username = controller1.text;
                         String password = controller2.text;
                         int count =0;
-                        for(User user in listData!) {
+                        for(User user in ref.watch(listDataProvider)) {
                           if(user.name == username && user.password == password){
                             showProgessCir(context);
                             await Future.delayed(Duration(seconds: 1));
