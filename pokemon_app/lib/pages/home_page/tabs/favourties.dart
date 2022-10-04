@@ -4,6 +4,7 @@ import 'package:pokemon_app/models/user.dart';
 
 
 import '../../../values/app_colors.dart';
+import '../../detals_page/detail_controller.dart';
 import '../../detals_page/detail_page.dart';
 import '../home_controller.dart';
 
@@ -15,30 +16,60 @@ class FavourtiesTab extends ConsumerStatefulWidget {
 
   @override
   ConsumerState createState() => _FavourtiesTabState();
+
 }
 
 class _FavourtiesTabState extends ConsumerState<FavourtiesTab> {
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    ref.watch(favProvider3(widget.userId));
+    super.didChangeDependencies();
+  }
   @override
   Widget build(BuildContext context) {
-    final favValue = ref.watch(favProvider(widget.userId));
-    return favValue.when(data: (data){
-      print('success!');
-      return Container(
-        padding: EdgeInsets.all(15),
-        child: GridView.count(physics: BouncingScrollPhysics(),childAspectRatio: (MediaQuery.of(context).size.width*0.5/ 250),crossAxisCount: 2, crossAxisSpacing: 8.0, mainAxisSpacing: 8.0, children: List.generate(data.length, (index) {
+    final data = ref.watch(fProvider3);
+    return Container(
+      padding: EdgeInsets.all(15),
+      child: GridView.count(physics: BouncingScrollPhysics(),
+        childAspectRatio: (MediaQuery
+            .of(context)
+            .size
+            .width * 0.5 / 250),
+        crossAxisCount: 2,
+        crossAxisSpacing: 8.0,
+        mainAxisSpacing: 8.0,
+        children: List.generate(data.length, (index) {
           return InkWell(
-            onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>DetailPage(pokemon: data[index], userId: widget.userId,)));
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                  DetailPage(pokemon: data[index], userId: widget.userId,)));
             },
-            child: Container( child: Column(crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.spaceAround,children: [
-              Container(child: Image.network(data[index].image),height: 100,width: MediaQuery.of(context).size.width*0.6,),
-              Container(margin: EdgeInsets.only(left: 10),child: Column(crossAxisAlignment: CrossAxisAlignment.start,children: [
-                Container(child: Text('#${data[index].pokeId.toString()}'),),
-                Container(child: Text(data[index].name, style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),),),
-                Container(child: Text(data[index].class1, style: TextStyle(color: AppColors.lightTextColor, fontSize: 14),),)
-              ],),)
+            child: Container(child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Container(child: Image.network(data[index].image),
+                  height: 100,
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width * 0.6,),
+                Container(margin: EdgeInsets.only(left: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    Container(child: Text(
+                        '#${data[index].pokeId.toString()}'),),
+                    Container(child: Text(data[index].name, style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold),),),
+                    Container(child: Text(data[index].class1, style: TextStyle(
+                        color: AppColors.lightTextColor, fontSize: 14),),)
+                  ],),)
 
-            ],),
+              ],),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10),
@@ -46,6 +77,7 @@ class _FavourtiesTabState extends ConsumerState<FavourtiesTab> {
             ),
           );
         }),),
-      );
-    }, error: (e, stack){ return Text(e.toString());}, loading: (){return Text('Loading');});  }
+    );
+
+  }
 }

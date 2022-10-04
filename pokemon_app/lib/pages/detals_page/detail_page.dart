@@ -4,6 +4,7 @@ import 'package:pokemon_app/models/pokemon.dart';
 import 'package:pokemon_app/values/app_colors.dart';
 import '../home_page/home_controller.dart';
 import 'detail_controller.dart';
+import 'detail_state.dart';
 
 class DetailPage extends ConsumerStatefulWidget {
   const DetailPage({
@@ -17,21 +18,16 @@ class DetailPage extends ConsumerStatefulWidget {
 }
 
 class _DetailPageState extends ConsumerState<DetailPage> {
+  DetailController detailController = DetailController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    detailController.checkFavourite(widget.pokemon, widget.userId, ref);
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
-    final faValue = ref.watch(favProvider(widget.userId));
-    int count =0;
-    List<Pokemon> listPokeFav=[];
-    faValue.when(data: (data){
-      listPokeFav = data;
-    }, error: (e, stack){print(e);}, loading: (){print('getting favourite list!');});
-    listPokeFav.forEach((element) {
-      if(widget.pokemon.pokeId == element.pokeId){
-        count =1;
-      };
-    }
-    );
+
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Color(0xffF3F9EF),
@@ -47,8 +43,8 @@ class _DetailPageState extends ConsumerState<DetailPage> {
                 child: Column(
                   children: [
                     Container(
-                      height: size.height*0.25,
-                      width: size.width,
+                      height: MediaQuery.of(context).size.height*0.25,
+                      width: MediaQuery.of(context).size.width,
                       color: Color(0xffF3F9EF),
                       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
@@ -67,29 +63,29 @@ class _DetailPageState extends ConsumerState<DetailPage> {
                           Image.network(widget.pokemon.image),)
                         ],
                       ),),
-                    Container(width: size.width,height: size.height*0.1,color: Colors.white,child:
+                    Container(width: MediaQuery.of(context).size.width,height: MediaQuery.of(context).size.height*0.1,color: Colors.white,child:
                     Row(
                       children: [
                         Container(
                           margin: EdgeInsetsDirectional.only(start: 20),
-                          width: size.width*0.5,
+                          width: MediaQuery.of(context).size.width*0.5,
                           child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,children: [
                             Container(
-                              height: size.height*0.05,
+                              height: MediaQuery.of(context).size.height*0.05,
                               child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: [
                                 Text('Height', style: TextStyle(color: AppColors.lightTextColor, fontSize: 12),),
                                 Text(widget.pokemon.height.toString(), style: TextStyle(color: AppColors.textColor, fontWeight: FontWeight.w500),)
                               ],),
                             ),
                             Container(
-                              height: size.height*0.05,
+                              height: MediaQuery.of(context).size.height*0.05,
                               child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: [
                                 Text('Weight', style: TextStyle(color: AppColors.lightTextColor, fontSize: 12),),
                                 Text(widget.pokemon.weight.toString(), style: TextStyle(color: AppColors.textColor, fontWeight: FontWeight.w500),)
                               ],),
                             ),
                             Container(
-                              height: size.height*0.05,
+                              height: MediaQuery.of(context).size.height*0.05,
                               child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: [
                                 Text('Heightx', style: TextStyle(color: AppColors.lightTextColor, fontSize: 12),),
                                 Text(widget.pokemon.height.toString(), style: TextStyle(color: AppColors.textColor, fontWeight: FontWeight.w500),)
@@ -111,22 +107,25 @@ class _DetailPageState extends ConsumerState<DetailPage> {
                   ],
                 )),
             Positioned(bottom: 40, right: 20 ,child: InkWell(
-              onTap: () {
-                if(count ==0){
+              onTap: () async {
+                List<Future> listF=[];
+                if(ref.watch(detailStateProvider) == DetailStatus.isNotFavourite){
                   //add
-                  ref.watch(addPokeToFavProvider(myParamsUserIdPoke(userId: widget.userId, poke: widget.pokemon)));
-                  //addPokeToFav.when(data: (data){mess = 'add success!';print(mess);}, error: (e, stack){mess = 'error: ${e.toString()}'; print(mess);}, loading: (){mess='adding';print(mess);});
-                  ref.refresh(favProvider(widget.userId));
-                  // ref.refresh(pokeByIdProvider(pokeId));
-                }else{
-                  //delete
-                  ref.watch(removePokeFromPavProvider(myParamsUserIdPoke(userId: widget.userId, poke: widget.pokemon)));
-                  //  removePokeFormFav.when(data: (data){mess = 'remove success!';print(mess);}, error: (e, stack){mess = 'error: ${e.toString()}'; print(mess);}, loading: (){mess='adding';print(mess);});
-                  // ref.refresh(pokeByIdProvider(pokeId));
-                  ref.refresh(favProvider(widget.userId));
+                  await ref.watch(addPokeToFavProvider(myParamsUserIdPoke(userId: widget.userId, poke: widget.pokemon)));
+                  ref.refresh(favProvider3(widget.userId));
+                  detailController.checkFavourite(widget.pokemon, widget.userId, ref);
+
+                }
+                if(ref.watch(detailStateProvider) == DetailStatus.isFavourite){
+                  //remove
+                  await ref.watch(removePokeFromPavProvider(myParamsUserIdPoke(userId: widget.userId, poke: widget.pokemon)));
+                  ref.refresh(detailStateProvider);
+                  ref.refresh(favProvider3(widget.userId));
+                  detailController.checkFavourite(widget.pokemon, widget.userId, ref);
+
                 }
               },
-              child: Container(alignment: Alignment.center,width:count==0 ? 140 : 210,height: 50,decoration: BoxDecoration(color: count == 0 ?Color(0xff3558CD):Color(0xffD5DEFF),
+              child: Container(alignment: Alignment.center,width:ref.watch(detailStateProvider) == DetailStatus.isNotFavourite ? 140 : 210,height: 50,decoration: BoxDecoration(color: ref.watch(detailStateProvider) == DetailStatus.isNotFavourite ?Color(0xff3558CD):Color(0xffD5DEFF),
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
@@ -136,7 +135,7 @@ class _DetailPageState extends ConsumerState<DetailPage> {
                     )
                   ]
               ),
-                child: Text(count==0?'Mark as favourite':'Remove from favourites', style: TextStyle(color: count == 0?Colors.white:Color(0xff3558CD), fontWeight: FontWeight.w500),),
+                child: Text(ref.watch(detailStateProvider) == DetailStatus.isNotFavourite?'Mark as favourite':'Remove from favourites', style: TextStyle(color: ref.watch(detailStateProvider) == DetailStatus.isNotFavourite ?Colors.white:Color(0xff3558CD), fontWeight: FontWeight.w500),),
               ),
             ))
           ],

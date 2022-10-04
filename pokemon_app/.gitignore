@@ -47,3 +47,4 @@ app.*.map.json
 
 #custom ignore
 lib/pages/detals_page/detail_controller.freezed.dart
+.fvm/flutter_sdk

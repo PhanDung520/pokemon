@@ -45,3 +45,5 @@ final pokeGetProvider = FutureProvider<List<Pokemon>>((ref) async {
 });
 
 final pokeGet2Provider = StateProvider<List<Pokemon>>((ref) =>[]);
+//////////////////////////
+

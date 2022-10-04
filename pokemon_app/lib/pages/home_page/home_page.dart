@@ -5,6 +5,7 @@ import 'package:pokemon_app/pages/home_page/tabs/favourties.dart';
 import 'package:pokemon_app/values/app_colors.dart';
 
 import '../../models/user.dart';
+import '../detals_page/detail_controller.dart';
 import 'home_controller.dart';
 
 class HomePage extends ConsumerStatefulWidget {
@@ -19,17 +20,22 @@ class HomePage extends ConsumerStatefulWidget {
 }
 
 class _HomePageState extends ConsumerState<HomePage> {
-  int num =0;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
   }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    ref.watch(favProvider3(widget.userId));
+    super.didChangeDependencies();
+  }
   @override
   Widget build(BuildContext context) {
-    final favValue = ref.watch(favProvider(widget.userId));
-    favValue.when(data: (data){num=data.length;}, error: (e, stack){}, loading: (){});
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -55,7 +61,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                       height: 15,
                       margin: EdgeInsets.only(bottom: 10, left: 2),
                       alignment: Alignment.center,
-                      child: Text(num.toString(), style: TextStyle(color: Colors.white, fontSize: 11),),
+
+                      child: Text(ref.watch(fProvider3).length.toString(), style: TextStyle(color: Colors.white, fontSize: 11),),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
                           color: AppColors.primaryColor

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokemon_app/models/user.dart';
 import 'package:pokemon_app/pages/home_page/home_page.dart';
 import 'package:pokemon_app/pages/login_page/components/dialog.dart';
+import 'package:pokemon_app/pages/login_page/login_state.dart';
 import 'package:pokemon_app/values/app_colors.dart';
 import 'login_controller.dart';
 
@@ -18,6 +19,7 @@ class LoginPage extends ConsumerStatefulWidget {
 class _LoginPageState extends ConsumerState<LoginPage> {
   final TextEditingController controller1 = TextEditingController();
   final TextEditingController controller2 = TextEditingController();
+  LoginController loginController = LoginController();
 
   @override
   void dispose() {
@@ -30,14 +32,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   @override
   void initState() {
     // TODO: implement initState
-    List<User> listUser=[];
-    initUser(listUser);//get data
-    ref.read(listDataProvider.notifier).state = listUser;
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
-    ref.read(listDataProvider.notifier).state = ref.watch(userGetProvider);
     return Scaffold(
       body: SingleChildScrollView(
         physics: NeverScrollableScrollPhysics(),
@@ -79,17 +77,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       onTap: () async {
                         String username = controller1.text;
                         String password = controller2.text;
-                        int count =0;
-                        for(User user in ref.watch(listDataProvider)) {
-                          if(user.name == username && user.password == password){
-                            showProgessCir(context);
-                            await Future.delayed(Duration(seconds: 1));
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage(userId: user.userId)));
-                            count =1;
-                            // ref.read(isLogin.notifier).state = 1;
-                          }
+                        await loginController.Login(username, password, ref);
+                        if(ref.watch(loginStateProvider).status == LoginStatus.success){
+                          showProgessCir(context);
+                          await Future.delayed(Duration(seconds: 1));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(userId: ref.watch(userLoginProvider).userId)));
+                          print(ref.watch(userLoginProvider).userId);
                         }
-                        if(count == 0){
+                        if(ref.watch(loginStateProvider).status == LoginStatus.errorUserPass){
                           showAlertDialog(context);
                         }
                       },
