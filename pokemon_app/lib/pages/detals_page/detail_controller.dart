@@ -9,22 +9,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'detail_controller.freezed.dart';
 
 
-
-// Stream<Pokemon> getPokeByName(int pokeId) async*{
-//   late Pokemon poke;
-//   await firestore.collection('pokemons').doc(pokeId.toString()).get().then((documentSnapshot) => {
-//     poke = Pokemon(documentSnapshot['class'], documentSnapshot['attack'], documentSnapshot['height'], documentSnapshot['hp'], documentSnapshot['id'], documentSnapshot['image'], documentSnapshot['name'], documentSnapshot['speed'], documentSnapshot['weight'])
-//   });
-//   yield poke;
-// }
-//
-// final pokeByIdProvider = StreamProvider.family<Pokemon, int>((ref, pokeId) {
-//   return getPokeByName(pokeId);
-// });
-
-
-
-
 @freezed
 class myParamsUserIdPoke with _$myParamsUserIdPoke{
   factory myParamsUserIdPoke({
@@ -33,14 +17,20 @@ class myParamsUserIdPoke with _$myParamsUserIdPoke{
   }) = _myParamsUserIdPoke;
 }
 
-final addPokeToFavProvider = FutureProvider.family<void, myParamsUserIdPoke>((ref, params) async {
+final addPokeToFavProvider = FutureProvider.family.autoDispose<void, myParamsUserIdPoke>((ref, params) async {
+  print('add');
   DocumentReference doc_ref = firestore.collection('users').doc(params.userId.toString()).collection('favourite').doc(params.poke.pokeId.toString());
   Map<String, dynamic> data ={};
+  print('pokeAdded: ${params.poke.pokeId}');
+
   return await doc_ref.set(data);
 });
 
 
-final removePokeFromPavProvider = FutureProvider.family<void, myParamsUserIdPoke>((ref, params) async {
+final removePokeFromPavProvider = FutureProvider.family.autoDispose<void, myParamsUserIdPoke>((ref, params) async {
+  print('remove'
+      '');
+
   DocumentReference doc_ref = firestore.collection('users').doc(params.userId.toString()).collection('favourite').doc(params.poke.pokeId.toString());
   print('pekedeleted: ${params.poke.pokeId}');
   return doc_ref.delete();
@@ -68,11 +58,6 @@ Future<void> getListFa2(int userId, List<Pokemon> listFa) async{
   final result = await Future.wait(listF);
 }
 
-final favProvider2 = Provider.family<List<Pokemon>,int>((ref, userId) {
-  List<Pokemon> listFa = [];//this is listFav
-  getListFa2(userId,listFa);
-  return listFa;
-});
 final fProvider3 = StateProvider<List<Pokemon>>((ref) =>[]);
 
 final favProvider3 = FutureProvider.family<void, int>((ref, userId) async {

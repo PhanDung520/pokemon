@@ -108,21 +108,21 @@ class _DetailPageState extends ConsumerState<DetailPage> {
                 )),
             Positioned(bottom: 40, right: 20 ,child: InkWell(
               onTap: () async {
-                List<Future> listF=[];
                 if(ref.watch(detailStateProvider) == DetailStatus.isNotFavourite){
                   //add
+                  print('click1');
                   await ref.watch(addPokeToFavProvider(myParamsUserIdPoke(userId: widget.userId, poke: widget.pokemon)));
                   ref.refresh(favProvider3(widget.userId));
+                  ref.refresh(detailStateProvider);
                   detailController.checkFavourite(widget.pokemon, widget.userId, ref);
-
                 }
                 if(ref.watch(detailStateProvider) == DetailStatus.isFavourite){
                   //remove
+                  print('click2');
                   await ref.watch(removePokeFromPavProvider(myParamsUserIdPoke(userId: widget.userId, poke: widget.pokemon)));
-                  ref.refresh(detailStateProvider);
                   ref.refresh(favProvider3(widget.userId));
+                  ref.refresh(detailStateProvider);
                   detailController.checkFavourite(widget.pokemon, widget.userId, ref);
-
                 }
               },
               child: Container(alignment: Alignment.center,width:ref.watch(detailStateProvider) == DetailStatus.isNotFavourite ? 140 : 210,height: 50,decoration: BoxDecoration(color: ref.watch(detailStateProvider) == DetailStatus.isNotFavourite ?Color(0xff3558CD):Color(0xffD5DEFF),
@@ -141,6 +141,5 @@ class _DetailPageState extends ConsumerState<DetailPage> {
           ],
         )
     );
-
   }
 }

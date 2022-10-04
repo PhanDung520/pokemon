@@ -73,25 +73,28 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         ),
                       ),
                     ),
-                    InkWell(
-                      onTap: () async {
-                        String username = controller1.text;
-                        String password = controller2.text;
-                        await loginController.Login(username, password, ref);
-                        if(ref.watch(loginStateProvider).status == LoginStatus.success){
-                          showProgessCir(context);
-                          await Future.delayed(Duration(seconds: 1));
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(userId: ref.watch(userLoginProvider).userId)));
-                          print(ref.watch(userLoginProvider).userId);
-                        }
-                        if(ref.watch(loginStateProvider).status == LoginStatus.errorUserPass){
-                          showAlertDialog(context);
-                        }
-                      },
-                      child: Container(width: MediaQuery.of(context).size.width, height: 50, alignment: Alignment.center, margin: EdgeInsets.only(top: 40),child: Text('Login', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),),decoration: BoxDecoration(
-                          color: AppColors.primaryColor,
-                          borderRadius: BorderRadius.circular(20)
-                      ),),
+                    Container(
+                        margin: EdgeInsets.only(top: 40),
+                      child: InkWell(
+                        onTap: () async {
+                          String username = controller1.text;
+                          String password = controller2.text;
+                          await loginController.Login(username, password, ref);
+                          if(ref.watch(loginStateProvider).status == LoginStatus.success){
+                            showProgessCir(context);
+                            await Future.delayed(Duration(seconds: 1));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(userId: ref.watch(userLoginProvider).userId)));
+                            print(ref.watch(userLoginProvider).userId);
+                          }
+                          if(ref.watch(loginStateProvider).status == LoginStatus.errorUserPass){
+                            showAlertDialog(context);
+                          }
+                        },
+                        child: Container(width: MediaQuery.of(context).size.width, height: 50, alignment: Alignment.center,child: Text('Login', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),),decoration: BoxDecoration(
+                            color: AppColors.primaryColor,
+                            borderRadius: BorderRadius.circular(20)
+                        ),),
+                      ),
                     ),
                   ],
                 ),
