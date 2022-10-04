@@ -135,7 +135,8 @@ class _DetailPageState extends ConsumerState<DetailPage> {
                     )
                   ]
               ),
-                child: Text(ref.watch(detailStateProvider) == DetailStatus.isNotFavourite?'Mark as favourite':'Remove from favourites', style: TextStyle(color: ref.watch(detailStateProvider) == DetailStatus.isNotFavourite ?Colors.white:Color(0xff3558CD), fontWeight: FontWeight.w500),),
+                //ref.watch(detailStateProvider) == DetailStatus.isNotFavourite?'Mark as favourite':ref.watch(detailStateProvider) == DetailStatus.isFavourite?'Remove from favourites':'loading'
+                child: Text(ref.watch(detailStateProvider) == DetailStatus.isNotFavourite ? 'Mark as favourite' : ref.watch(detailStateProvider) == DetailStatus.isFavourite ? 'Remove from favourites' : 'loading', style: TextStyle(color: ref.watch(detailStateProvider) == DetailStatus.isNotFavourite ?Colors.white:Color(0xff3558CD), fontWeight: FontWeight.w500),),
               ),
             ))
           ],

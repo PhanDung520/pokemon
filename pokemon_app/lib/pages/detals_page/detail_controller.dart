@@ -66,19 +66,25 @@ final favProvider3 = FutureProvider.family<void, int>((ref, userId) async {
   ref.read(fProvider3.notifier).state = listFa;
 });
 
-final detailStateProvider = StateProvider.autoDispose((ref) => DetailStatus.isNotFavourite);
+final detailStateProvider = StateProvider.autoDispose((ref) => DetailStatus.isLoading);
 
 
 class DetailController{
   Future<void> checkFavourite(Pokemon pokemon, int userId, WidgetRef ref) async{
     //get all favourite
     List<Pokemon> listFav = [];
+    int count =0;
     await getListFa2(userId,listFav);
     listFav.forEach((element) {
       if(element.pokeId == pokemon.pokeId){
         //this poke is in fav
         ref.read(detailStateProvider.notifier).state = DetailStatus.isFavourite;
+        count =1;
       }
     });
+    if(count ==0){
+      ref.read(detailStateProvider.notifier).state = DetailStatus.isNotFavourite;
+
+    }
   }
 }

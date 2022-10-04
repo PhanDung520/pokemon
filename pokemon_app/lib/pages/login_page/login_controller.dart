@@ -4,8 +4,6 @@ import 'package:pokemon_app/pages/login_page/login_state.dart';
 import '../../models/user.dart';
 import '../../utils/utils.dart';
 
-final listDataProvider = StateProvider<List<User>>((ref) =>[]);
-
 Future<void> initUser(List<User> listUser) async{
   await firestore.collection('users').get().then((value) => {
     value.docs.forEach((element) {
@@ -14,12 +12,6 @@ Future<void> initUser(List<User> listUser) async{
     })
   });
 }
-
-final userGetProvider = Provider<List<User>>((ref) {
-  List<User> listUser = [];
-  initUser(listUser);
-  return listUser;
-});
 
 final userLoginProvider = StateProvider((ref) => User('name', 'password', 5));
 final loginStateProvider = StateProvider((ref) => LoginState(LoginStatus.errorUserPass));

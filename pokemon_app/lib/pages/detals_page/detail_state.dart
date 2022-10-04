@@ -1,6 +1,7 @@
 enum DetailStatus{
   isFavourite,
-  isNotFavourite
+  isNotFavourite,
+  isLoading
 }
 
 class DetailState{
