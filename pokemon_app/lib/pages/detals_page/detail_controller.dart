@@ -68,7 +68,6 @@ final favProvider3 = FutureProvider.family<void, int>((ref, userId) async {
 
 final detailStateProvider = StateProvider.autoDispose((ref) => DetailStatus.isLoading);
 
-
 class DetailController{
   Future<void> checkFavourite(Pokemon pokemon, int userId, WidgetRef ref) async{
     //get all favourite
@@ -84,7 +83,6 @@ class DetailController{
     });
     if(count ==0){
       ref.read(detailStateProvider.notifier).state = DetailStatus.isNotFavourite;
-
     }
   }
 }
