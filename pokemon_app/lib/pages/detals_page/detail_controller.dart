@@ -10,30 +10,23 @@ part 'detail_controller.freezed.dart';
 
 
 @freezed
-class myParamsUserIdPoke with _$myParamsUserIdPoke{
-  factory myParamsUserIdPoke({
+class MyParamsUserIdPoke with _$MyParamsUserIdPoke{
+  factory MyParamsUserIdPoke({
     required int userId,
     required Pokemon poke
-  }) = _myParamsUserIdPoke;
+  }) = _MyParamsUserIdPoke;
 }
 
-final addPokeToFavProvider = FutureProvider.family.autoDispose<void, myParamsUserIdPoke>((ref, params) async {
-  print('add');
-  DocumentReference doc_ref = firestore.collection('users').doc(params.userId.toString()).collection('favourite').doc(params.poke.pokeId.toString());
+final addPokeToFavProvider = FutureProvider.family.autoDispose<void, MyParamsUserIdPoke>((ref, params) async {
+  DocumentReference documentReference = firestore.collection('users').doc(params.userId.toString()).collection('favourite').doc(params.poke.pokeId.toString());
   Map<String, dynamic> data ={};
-  print('pokeAdded: ${params.poke.pokeId}');
-
-  return await doc_ref.set(data);
+  return await documentReference.set(data);
 });
 
 
-final removePokeFromPavProvider = FutureProvider.family.autoDispose<void, myParamsUserIdPoke>((ref, params) async {
-  print('remove'
-      '');
-
-  DocumentReference doc_ref = firestore.collection('users').doc(params.userId.toString()).collection('favourite').doc(params.poke.pokeId.toString());
-  print('pekedeleted: ${params.poke.pokeId}');
-  return doc_ref.delete();
+final removePokeFromPavProvider = FutureProvider.family.autoDispose<void, MyParamsUserIdPoke>((ref, params) async {
+  DocumentReference documentReference = firestore.collection('users').doc(params.userId.toString()).collection('favourite').doc(params.poke.pokeId.toString());
+  return documentReference.delete();
 });
 ///////////////////////////////////////////////////////
 Future<void> getListFa2(int userId, List<Pokemon> listFa) async{
@@ -55,7 +48,7 @@ Future<void> getListFa2(int userId, List<Pokemon> listFa) async{
     });
     listF.add(a);
   });
-  final result = await Future.wait(listF);
+  await Future.wait(listF);
 }
 
 final fProvider3 = StateProvider<List<Pokemon>>((ref) =>[]);

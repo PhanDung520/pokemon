@@ -4,7 +4,7 @@ showAlertDialog(BuildContext context) {
 
   // set up the button
   Widget okButton = TextButton(
-    child: Text("OK"),
+    child: const Text("OK"),
     onPressed: () {
       Navigator.of(context).pop();
     },
@@ -12,8 +12,8 @@ showAlertDialog(BuildContext context) {
 
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
-    title: Text("Error login"),
-    content: Text("Wrong Username or password!"),
+    title: const Text("Error login"),
+    content: const Text("Wrong Username or password!"),
     actions: [
       okButton,
     ],
@@ -32,7 +32,7 @@ showProgessCir(BuildContext context) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return Center(child: CircularProgressIndicator(),);
+      return const Center(child: CircularProgressIndicator(),);
     },
   );
 }
@@ -40,7 +40,7 @@ showProgessCir(BuildContext context) {
 showAlertDialogIfError(BuildContext context) {
   // set up the button
   Widget okButton = TextButton(
-    child: Text("OK"),
+    child: const Text("OK"),
     onPressed: () {
       Navigator.of(context).pop();
     },
@@ -48,8 +48,8 @@ showAlertDialogIfError(BuildContext context) {
 
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
-    title: Text("Error login"),
-    content: Text("Error Internet"),
+    title: const Text("Error login"),
+    content: const Text("Error Internet"),
     actions: [
       okButton,
     ],

@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pokemon_app/models/user.dart';
-
-
 import '../../../values/app_colors.dart';
 import '../../detals_page/detail_controller.dart';
 import '../../detals_page/detail_page.dart';
-import '../home_controller.dart';
 
 class FavourtiesTab extends ConsumerStatefulWidget {
   const FavourtiesTab({
@@ -31,8 +27,8 @@ class _FavourtiesTabState extends ConsumerState<FavourtiesTab> {
   Widget build(BuildContext context) {
     final data = ref.watch(fProvider3);
     return Container(
-      padding: EdgeInsets.all(15),
-      child: GridView.count(physics: BouncingScrollPhysics(),
+      padding: const EdgeInsets.all(15),
+      child: GridView.count(physics: const BouncingScrollPhysics(),
         childAspectRatio: (MediaQuery
             .of(context)
             .size
@@ -50,23 +46,23 @@ class _FavourtiesTabState extends ConsumerState<FavourtiesTab> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Container(child: Image.network(data[index].image),
+                SizedBox(child: Image.network(data[index].image),
                   height: 100,
                   width: MediaQuery
                       .of(context)
                       .size
                       .width * 0.6,),
-                Container(margin: EdgeInsets.only(left: 10),
+                Container(margin: const EdgeInsets.only(left: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    Container(child: Text(
-                        '#${data[index].pokeId.toString()}'),),
-                    Container(child: Text(data[index].name, style: TextStyle(
+                    Text(
+                        '#${data[index].pokeId.toString()}'),
+                    Text(data[index].name, style: const TextStyle(
                         color: Colors.black,
                         fontSize: 16,
-                        fontWeight: FontWeight.bold),),),
-                    Container(child: Text(data[index].class1, style: TextStyle(
-                        color: AppColors.lightTextColor, fontSize: 14),),)
+                        fontWeight: FontWeight.bold),),
+                    Text(data[index].class1, style: const TextStyle(
+                        color: AppColors.lightTextColor, fontSize: 14),)
                   ],),)
 
               ],),

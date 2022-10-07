@@ -4,9 +4,7 @@ import 'package:pokemon_app/pages/home_page/tabs/all_pokemon_tab.dart';
 import 'package:pokemon_app/pages/home_page/tabs/favourties.dart';
 import 'package:pokemon_app/values/app_colors.dart';
 
-import '../../models/user.dart';
 import '../detals_page/detail_controller.dart';
-import 'home_controller.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({
@@ -40,6 +38,15 @@ class _HomePageState extends ConsumerState<HomePage> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          actions: [
+            InkWell(onTap: (){
+              showModalBottomSheet(isScrollControlled: true,context: context, builder: (context){
+                return Container(width: MediaQuery.of(context).size.width, height: MediaQuery.of(context).size.height,
+                    child: Center(child:
+                      Text('Profile tab'),),);
+              });
+            },child: Container(height: 40, width: 40, alignment: Alignment.center, margin: EdgeInsetsDirectional.only(end: 20),child: Icon(Icons.person, color: Colors.black38,)))
+          ],
           backgroundColor: Colors.white,
           title: const Text('Pokemon App', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),),
           centerTitle: true ,
@@ -59,10 +66,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                     child: Container(
                       width: 15,
                       height: 15,
-                      margin: EdgeInsets.only(bottom: 10, left: 2),
+                      margin: const EdgeInsets.only(bottom: 10, left: 2),
                       alignment: Alignment.center,
-
-                      child: Text(ref.watch(fProvider3).length.toString(), style: TextStyle(color: Colors.white, fontSize: 11),),
+                      child: Text(ref.watch(fProvider3).length.toString(), style: const TextStyle(color: Colors.white, fontSize: 11),),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
                           color: AppColors.primaryColor

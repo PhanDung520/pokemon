@@ -1,5 +1,3 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pokemon_app/utils/utils.dart';
 
 class Pokemon{
   String class1;

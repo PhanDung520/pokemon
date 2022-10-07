@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../models/pokemon.dart';
-import '../../models/user.dart';
 import '../../utils/utils.dart';
 
 
@@ -13,7 +12,6 @@ Stream<List<Pokemon>> getListFa(int userId) async*{
     value.docs.forEach((element) {
       int i = int.parse(element.id);
       if(i <100){
-        print('docId: $i');
         listPokeId.add(i);
       }
     })
@@ -26,7 +24,7 @@ Stream<List<Pokemon>> getListFa(int userId) async*{
     });
     listF.add(a);
   });
-  final result = await Future.wait(listF);
+  await Future.wait(listF);
   yield listFa;
 }
 
