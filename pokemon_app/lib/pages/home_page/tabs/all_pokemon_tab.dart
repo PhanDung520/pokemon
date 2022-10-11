@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokemon_app/models/pokemon.dart';
 import 'package:pokemon_app/values/app_colors.dart';
 import '../../../utils/utils.dart';
-import '../../detals_page/detail_page.dart';
+import '../../detals_page/screens/detail_page.dart';
 import '../home_controller.dart';
 
 class AllPokemonTab extends ConsumerStatefulWidget {
@@ -29,7 +29,7 @@ class _AllPokemonTabState extends ConsumerState<AllPokemonTab> {
     if(mounted){
       await firestore.collection('pokemons').get().then((value) => {
         value.docs.forEach((element) {
-          listPoke.add(Pokemon(element['class'], element['attack'], element['height'], element['hp'], element['id'], element['image'], element['name'], element['speed'], element['weight']));
+          listPoke.add(Pokemon(element['class'], element['attack'], element['height'], element['hp'], element['id'], element['image'], element['name'], element['speed'], element['weight'], int.parse(element['like'].toString())));
         })
       });
       ref.read(pokeGet2Provider.notifier).state = listPoke;

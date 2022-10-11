@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../values/app_colors.dart';
-import '../../detals_page/detail_controller.dart';
-import '../../detals_page/detail_page.dart';
+import '../../detals_page/viewmodel/detail_provider.dart';
+import '../../detals_page/screens/detail_page.dart';
 
 class FavourtiesTab extends ConsumerStatefulWidget {
   const FavourtiesTab({

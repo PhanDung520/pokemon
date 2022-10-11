@@ -9,7 +9,8 @@ class Pokemon{
   String name;
   int speed;
   int weight;
+  int like;
 
-  Pokemon(this.class1, this.attack, this.height, this.hp, this.pokeId, this.image, this.name, this.speed, this.weight);
+  Pokemon(this.class1, this.attack, this.height, this.hp, this.pokeId, this.image, this.name, this.speed, this.weight, this.like);
 }
 

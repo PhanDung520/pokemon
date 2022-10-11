@@ -34,7 +34,6 @@ class SignUpNotifier extends StateNotifier<SignUpState> {
       });
       await firestore.collection('users').doc(idLast.toString()).collection('favourite').doc('999').set({});
       state = const SignUpState.available();
-
     }
   }
 }

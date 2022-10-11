@@ -20,7 +20,7 @@ Stream<List<Pokemon>> getListFa(int userId) async*{
   //tim kiem voi poke id
   listPokeId.forEach((element)  {
     var a = firestore.collection('pokemons').doc(element.toString()).get().then((documentSnapshot){
-      listFa.add(Pokemon(documentSnapshot['class'], documentSnapshot['attack'], documentSnapshot['height'], documentSnapshot['hp'], documentSnapshot['id'], documentSnapshot['image'], documentSnapshot['name'], documentSnapshot['speed'], documentSnapshot['weight']));
+      listFa.add(Pokemon(documentSnapshot['class'], documentSnapshot['attack'], documentSnapshot['height'], documentSnapshot['hp'], documentSnapshot['id'], documentSnapshot['image'], documentSnapshot['name'], documentSnapshot['speed'], documentSnapshot['weight'], int.parse(documentSnapshot['like'].toString())));
     });
     listF.add(a);
   });
@@ -36,7 +36,7 @@ final pokeGetProvider = FutureProvider<List<Pokemon>>((ref) async {
   List<Pokemon> listPoke = [];
   await firestore.collection('pokemons').get().then((value) => {
     value.docs.forEach((element) {
-      listPoke.add(Pokemon(element['class'], element['attack'], element['height'], element['hp'], element['id'], element['image'], element['name'], element['speed'], element['weight']));
+      listPoke.add(Pokemon(element['class'], element['attack'], element['height'], element['hp'], element['id'], element['image'], element['name'], element['speed'], element['weight'], int.parse(element['like'].toString())));
     })
   });
   return listPoke;

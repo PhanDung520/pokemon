@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokemon_app/models/pokemon.dart';
 import 'package:pokemon_app/values/app_colors.dart';
-import '../home_page/home_controller.dart';
-import 'detail_controller.dart';
-import 'detail_state.dart';
+import '../../home_page/home_controller.dart';
+import '../viewmodel/detail_provider.dart';
+import '../viewmodel/detail_state.dart';
 
 class DetailPage extends ConsumerStatefulWidget {
   const DetailPage({
@@ -19,16 +19,24 @@ class DetailPage extends ConsumerStatefulWidget {
 
 class _DetailPageState extends ConsumerState<DetailPage> {
   DetailController detailController = DetailController();
+  TextEditingController controllerk1 = TextEditingController();
   @override
   void initState() {
     // TODO: implement initState
     detailController.checkFavourite(widget.pokemon, widget.userId, ref);
+    ref.read(commentProvider.notifier).commentDisplay(widget.pokemon.pokeId, ref);
     super.initState();
   }
   @override
+  void dispose() {
+    // TODO: implement dispose
+    controllerk1.dispose();
+    super.dispose();
+  }
+  @override
   Widget build(BuildContext context) {
-
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: const Color(0xffF3F9EF),
           elevation: 2,
@@ -54,7 +62,6 @@ class _DetailPageState extends ConsumerState<DetailPage> {
                             Text(widget.pokemon.class1, style: const TextStyle(color: AppColors.textColor, fontSize: 16, fontWeight: FontWeight.w500),)
                           ],),
                           Text('#${widget.pokemon.pokeId}')
-
                         ],),
                         margin: const EdgeInsets.only(top: 20, left: 20, bottom: 20),
                       ),
@@ -91,17 +98,75 @@ class _DetailPageState extends ConsumerState<DetailPage> {
                           ],),
                         )
                       ],),
+                    ),
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(child: Icon(Icons.favorite, color: Colors.black26,),),
+                          Text('${ref.watch(likeCountProvider(widget.pokemon))} likes', style: TextStyle(color: AppColors.lightTextColor),)
+                        ],
+                      ),
                     )
                   ],
                 )
                   ,),
                 Expanded(
                   child: Container(
-                    margin: const EdgeInsetsDirectional.only(top: 10),
                     color: Colors.white,
-                    child: ListView(
+                    margin: EdgeInsetsDirectional.only(top: 10),
+                    child: Column(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color: AppColors.backgroundColor,
+                            borderRadius: BorderRadius.circular(5)
+                          ),
+                          margin: EdgeInsets.all(15),
+                          padding: EdgeInsets.symmetric(horizontal: 15),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                width: MediaQuery.of(context).size.width*0.7,
+                                child: TextField(
+                                  controller: controllerk1,
+                                  decoration: const InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: ' comment...',
+                                    hintStyle: TextStyle(color: AppColors.lightTextColor, fontSize: 14)
+                                  ),
+                                ),
+                              ),
+                              InkWell(onTap: (){
+                                ref.watch(commentProvider.notifier).addComment(widget.pokemon.pokeId, widget.userId, controllerk1.text, ref);
+                                ref.refresh(commentProvider.notifier).addComment(widget.pokemon.pokeId, widget.userId, controllerk1.text, ref);
+                              },child: Icon(Icons.send, color: AppColors.lightTextColor,))
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            margin: EdgeInsetsDirectional.only(start: 20, top: 10, end: 20, bottom: 90),
+                            child: ListView.builder(
+                              itemCount: ref.watch(getListCmtProvider).length,
+                              itemBuilder: (context, index){
+                                return Container(
+                                  margin: EdgeInsetsDirectional.only(top:10),
+                                  child: Row(
+                                    children: [
+                                      Text('${ref.watch(getListCmtProvider)[index].userId.toString()}: '),
+                                      Container(margin: EdgeInsetsDirectional.only(start: 20),child: Text(ref.watch(getListCmtProvider)[index].desc, style: TextStyle(color: AppColors.lightTextColor),))
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
+                  )
                 )
               ],
             ),
