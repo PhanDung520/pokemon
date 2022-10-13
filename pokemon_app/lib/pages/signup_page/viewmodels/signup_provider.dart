@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokemon_app/pages/signup_page/viewmodels/signup_state.dart';
 import 'package:pokemon_app/utils/utils.dart';

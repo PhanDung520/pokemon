@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pokemon_app/models/user.dart';
 import 'package:pokemon_app/pages/home_page/home_page.dart';
 import 'package:pokemon_app/pages/login_page/components/dialog.dart';
 import 'package:pokemon_app/pages/login_page/login_state.dart';
 import 'package:pokemon_app/pages/signup_page/screens/signup_screen.dart';
-import 'package:pokemon_app/pages/signup_page/viewmodels/signup_provider.dart';
 import 'package:pokemon_app/values/app_colors.dart';
 import 'login_controller.dart';
 
@@ -100,12 +98,12 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             ),),
                           ),
                           Container(
-                            margin: EdgeInsets.only(top: 20),
+                            margin: const EdgeInsets.only(top: 20),
                             child: InkWell(onTap: (){
                               // ref.read(signUpProvider.notifier).signUp('name', 'password');
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=>SignUpPage()));
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>const SignUpPage()));
                             },
-                                child: Container(child: Text('Sign up!',style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)), height: 50, width: MediaQuery.of(context).size.width, alignment: Alignment.center,
+                                child: Container(child: const Text('Sign up!',style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)), height: 50, width: MediaQuery.of(context).size.width, alignment: Alignment.center,
                                   decoration: BoxDecoration(
                                       color: AppColors.primaryColor,
                                       borderRadius: BorderRadius.circular(20)

@@ -5,7 +5,6 @@ import 'package:pokemon_app/pages/signup_page/viewmodels/signup_provider.dart';
 import 'package:pokemon_app/pages/signup_page/viewmodels/signup_state.dart';
 
 import '../../../values/app_colors.dart';
-import '../../login_page/components/dialog.dart';
 
 class SignUpPage extends ConsumerStatefulWidget {
   const SignUpPage({
@@ -77,17 +76,17 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                           if(controllerS1.text != '' && controllerS2.text != '' && controllerS3.text != ''){
                             ref.read(textSignUpStateProvider.notifier).state = 'loading ...';
                             await ref.read(signUpProvider.notifier).signUp(controllerS1.text, controllerS2.text, controllerS3.text);
-                            if(ref.watch(signUpProvider.notifier).state == SignUpState.error()){
+                            if(ref.watch(signUpProvider.notifier).state == const SignUpState.error()){
                              ref.read(textSignUpStateProvider.notifier).state = 'error';
                             }
-                            if(ref.watch(signUpProvider.notifier).state == SignUpState.available()){
+                            if(ref.watch(signUpProvider.notifier).state == const SignUpState.available()){
                               ref.read(textSignUpStateProvider.notifier).state = 'success';
-                              await Future.delayed(Duration(seconds: 1));
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginPage()));
+                              await Future.delayed(const Duration(seconds: 1));
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=> const LoginPage()));
                             }
                           }
                         },
-                        child: Container(width: MediaQuery.of(context).size.width, height: 50, alignment: Alignment.center,child: Text(ref.watch(textSignUpStateProvider), style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),),decoration: BoxDecoration(
+                        child: Container(width: MediaQuery.of(context).size.width, height: 50, alignment: Alignment.center,child: Text(ref.watch(textSignUpStateProvider), style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),),decoration: BoxDecoration(
                             color: AppColors.primaryColor,
                             borderRadius: BorderRadius.circular(20)
                         ),),

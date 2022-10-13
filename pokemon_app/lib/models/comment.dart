@@ -2,5 +2,6 @@ class Comment{
   int userId;
   int cmtId;
   String desc;
-  Comment(this.userId, this.cmtId, this.desc);
+  String name;
+  Comment(this.userId, this.cmtId, this.desc, this.name);
 }

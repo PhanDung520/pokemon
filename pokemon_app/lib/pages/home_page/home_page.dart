@@ -33,7 +33,6 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
   @override
   Widget build(BuildContext context) {
-
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -41,11 +40,13 @@ class _HomePageState extends ConsumerState<HomePage> {
           actions: [
             InkWell(onTap: (){
               showModalBottomSheet(isScrollControlled: true,context: context, builder: (context){
-                return Container(width: MediaQuery.of(context).size.width, height: MediaQuery.of(context).size.height,
-                    child: Center(child:
-                      Text('Profile tab'),),);
+                return SizedBox(width: MediaQuery.of(context).size.width, height: MediaQuery.of(context).size.height,
+                    child: const Center(child:
+                      Text('Profile tab'),
+                    ),
+                );
               });
-            },child: Container(height: 40, width: 40, alignment: Alignment.center, margin: EdgeInsetsDirectional.only(end: 20),child: Icon(Icons.person, color: Colors.black38,)))
+            },child: Container(height: 40, width: 40, alignment: Alignment.center, margin: const EdgeInsetsDirectional.only(end: 20),child: const Icon(Icons.person, color: Colors.black38,)))
           ],
           backgroundColor: Colors.white,
           title: const Text('Pokemon App', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),),

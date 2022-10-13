@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokemon_app/models/comment.dart';
+import 'package:pokemon_app/models/user.dart';
 import 'package:pokemon_app/pages/detals_page/viewmodel/detail_state.dart';
 
 import '../../../models/pokemon.dart';
@@ -118,15 +119,28 @@ class CommentNotifier extends StateNotifier<CommentState>{
     await firestore.collection('pokemons').doc(pokeId.toString()).collection('cmt').get().then((value) => {
       value.docs.forEach((element) {
         if(int.parse(element['cmtId']) !=999){
-          listCmt.add(Comment(int.parse(element['userId']), int.parse(element['cmtId']), element['desc']));
+          listCmt.add(Comment(int.parse(element['userId']), int.parse(element['cmtId']), element['desc'], ''));
         }
       })
     });
+    // get all user
+    List<User> userList =[];
+    await firestore.collection('users').get().then((value) => {
+      value.docs.forEach((element) {
+        userList.add(User(element['username'], element['password'], int.parse(element['userId']), element['name']));
+      })
+    });
 
-    state = const CommentState.done();
+    for(Comment cmt in listCmt){
+      for(User user in userList){
+        if(cmt.userId == user.userId){
+          cmt.name = user.nameDisplay;
+          break;
+        }
+      }
+    }
     ref.read(getListCmtProvider.notifier).state = listCmt;
     print('length: ${listCmt.length}');
-
   }
   
   Future<void> addComment(int pokeId,int userId,String desc, WidgetRef ref)async{
@@ -141,7 +155,7 @@ class CommentNotifier extends StateNotifier<CommentState>{
     });
     if(idLast == 0){
       //error
-      state = CommentState.error();
+      state = const CommentState.error();
     }
     else{
       //do add

@@ -103,8 +103,8 @@ class _DetailPageState extends ConsumerState<DetailPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Container(child: Icon(Icons.favorite, color: Colors.black26,),),
-                          Text('${ref.watch(likeCountProvider(widget.pokemon))} likes', style: TextStyle(color: AppColors.lightTextColor),)
+                          const Icon(Icons.favorite, color: Colors.black26,),
+                          Text('${ref.watch(likeCountProvider(widget.pokemon))} likes', style: const TextStyle(color: AppColors.lightTextColor),)
                         ],
                       ),
                     )
@@ -114,7 +114,7 @@ class _DetailPageState extends ConsumerState<DetailPage> {
                 Expanded(
                   child: Container(
                     color: Colors.white,
-                    margin: EdgeInsetsDirectional.only(top: 10),
+                    margin: const EdgeInsetsDirectional.only(top: 10),
                     child: Column(
                       children: [
                         Container(
@@ -122,12 +122,12 @@ class _DetailPageState extends ConsumerState<DetailPage> {
                             color: AppColors.backgroundColor,
                             borderRadius: BorderRadius.circular(5)
                           ),
-                          margin: EdgeInsets.all(15),
-                          padding: EdgeInsets.symmetric(horizontal: 15),
+                          margin: const EdgeInsets.all(15),
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Container(
+                              SizedBox(
                                 width: MediaQuery.of(context).size.width*0.7,
                                 child: TextField(
                                   controller: controllerk1,
@@ -141,22 +141,22 @@ class _DetailPageState extends ConsumerState<DetailPage> {
                               InkWell(onTap: (){
                                 ref.watch(commentProvider.notifier).addComment(widget.pokemon.pokeId, widget.userId, controllerk1.text, ref);
                                 ref.refresh(commentProvider.notifier).addComment(widget.pokemon.pokeId, widget.userId, controllerk1.text, ref);
-                              },child: Icon(Icons.send, color: AppColors.lightTextColor,))
+                              },child: const Icon(Icons.send, color: AppColors.lightTextColor,))
                             ],
                           ),
                         ),
                         Expanded(
                           child: Container(
-                            margin: EdgeInsetsDirectional.only(start: 20, top: 10, end: 20, bottom: 90),
+                            margin: const EdgeInsetsDirectional.only(start: 40, top: 10, end: 20, bottom: 90),
                             child: ListView.builder(
                               itemCount: ref.watch(getListCmtProvider).length,
                               itemBuilder: (context, index){
                                 return Container(
-                                  margin: EdgeInsetsDirectional.only(top:10),
+                                  margin: const EdgeInsetsDirectional.only(top:10),
                                   child: Row(
                                     children: [
-                                      Text('${ref.watch(getListCmtProvider)[index].userId.toString()}: '),
-                                      Container(margin: EdgeInsetsDirectional.only(start: 20),child: Text(ref.watch(getListCmtProvider)[index].desc, style: TextStyle(color: AppColors.lightTextColor),))
+                                      Text('${ref.watch(getListCmtProvider)[ref.watch(getListCmtProvider).length-index-1].name.toString()}: ', style: const TextStyle(color: AppColors.textColor, fontSize: 14, fontWeight: FontWeight.w500),),
+                                      Container(margin: const EdgeInsetsDirectional.only(start: 20),child: Text(ref.watch(getListCmtProvider)[ref.watch(getListCmtProvider).length-index-1].desc, style: const TextStyle(color: AppColors.lightTextColor, fontSize: 14),))
                                     ],
                                   ),
                                 );
