@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pokemon_app/pages/home_page/tabs/all_pokemon_tab.dart';
-import 'package:pokemon_app/pages/home_page/tabs/favourties.dart';
+import 'package:pokemon_app/pages/home_page/screens/tabs/all_pokemon_tab.dart';
+import 'package:pokemon_app/pages/home_page/screens/tabs/favourties.dart';
+
 import 'package:pokemon_app/values/app_colors.dart';
 
-import '../detals_page/viewmodel/detail_provider.dart';
+import '../../detals_page/viewmodel/detail_provider.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({

@@ -19,19 +19,23 @@ class MyParamsUserIdPoke with _$MyParamsUserIdPoke{
   }) = _MyParamsUserIdPoke;
 }
 
-final likeCountProvider = StateProvider.family.autoDispose<int, Pokemon>((ref, poke) =>poke.like);
+final likeCountProvider = StateProvider.family<int, Pokemon>((ref, poke) =>poke.like);
 
 
 final addPokeToFavProvider = FutureProvider.family.autoDispose<void, MyParamsUserIdPoke>((ref, params) async {
   DocumentReference documentReference = firestore.collection('users').doc(params.userId.toString()).collection('favourite').doc(params.poke.pokeId.toString());
   Map<String, dynamic> data ={};
   //set like +1
-  int newLike = params.poke.like + 1;
+  int newLike = params.poke.like ;
+  var b = firestore.collection('pokemons').doc(params.poke.pokeId.toString()).get().then((value) => {
+    newLike = int.parse(value.get('like').toString()) +1
+  });
   await documentReference.set(data);
   List<Future> listF=[];
   var a = firestore.collection('pokemons').doc(params.poke.pokeId.toString()).update({
     'like': newLike.toString()
   });
+  listF.add(b);
   listF.add(a);
   await Future.wait(listF);
   await firestore.collection('pokemons').doc(params.poke.pokeId.toString()).get().then((value) => {
@@ -42,12 +46,17 @@ final addPokeToFavProvider = FutureProvider.family.autoDispose<void, MyParamsUse
 
 final removePokeFromPavProvider = FutureProvider.family.autoDispose<void, MyParamsUserIdPoke>((ref, params) async {
   DocumentReference documentReference = firestore.collection('users').doc(params.userId.toString()).collection('favourite').doc(params.poke.pokeId.toString());
-  int newLike = params.poke.like - 1;
+  int newLike = params.poke.like ;
+  var b = firestore.collection('pokemons').doc(params.poke.pokeId.toString()).get().then((value) => {
+    newLike = int.parse(value.get('like').toString()) - 1
+  });
+
   await documentReference.delete();
   List<Future> listF =[];
   var a = firestore.collection('pokemons').doc(params.poke.pokeId.toString()).update({
     'like': newLike.toString()
   });
+  listF.add(b);
   listF.add(a);
   await Future.wait(listF);
   await firestore.collection('pokemons').doc(params.poke.pokeId.toString()).get().then((value) => {

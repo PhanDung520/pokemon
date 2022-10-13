@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pokemon_app/pages/login_page/login_page.dart';
+import 'package:pokemon_app/pages/login_page/screens/login_page.dart';
 import 'package:pokemon_app/pages/signup_page/viewmodels/signup_provider.dart';
 import 'package:pokemon_app/pages/signup_page/viewmodels/signup_state.dart';
 

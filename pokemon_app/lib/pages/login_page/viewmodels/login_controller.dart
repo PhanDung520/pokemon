@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pokemon_app/pages/login_page/login_state.dart';
+import 'package:pokemon_app/pages/login_page/viewmodels/login_state.dart';
 
-import '../../models/user.dart';
-import '../../utils/utils.dart';
+import '../../../models/user.dart';
+import '../../../utils/utils.dart';
 
 Future<void> initUser(List<User> listUser) async{
   await firestore.collection('users').get().then((value) => {

@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../models/pokemon.dart';
-import '../../utils/utils.dart';
+import '../../../models/pokemon.dart';
+import '../../../utils/utils.dart';
 
 
 Stream<List<Pokemon>> getListFa(int userId) async*{
@@ -18,12 +18,12 @@ Stream<List<Pokemon>> getListFa(int userId) async*{
   });
   List<Future> listF = [];
   //tim kiem voi poke id
-  listPokeId.forEach((element)  {
+  for (var element in listPokeId) {
     var a = firestore.collection('pokemons').doc(element.toString()).get().then((documentSnapshot){
       listFa.add(Pokemon(documentSnapshot['class'], documentSnapshot['attack'], documentSnapshot['height'], documentSnapshot['hp'], documentSnapshot['id'], documentSnapshot['image'], documentSnapshot['name'], documentSnapshot['speed'], documentSnapshot['weight'], int.parse(documentSnapshot['like'].toString())));
     });
     listF.add(a);
-  });
+  }
   await Future.wait(listF);
   yield listFa;
 }

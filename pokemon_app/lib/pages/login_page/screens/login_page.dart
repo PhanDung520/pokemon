@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pokemon_app/pages/home_page/home_page.dart';
-import 'package:pokemon_app/pages/login_page/components/dialog.dart';
-import 'package:pokemon_app/pages/login_page/login_state.dart';
+import 'package:pokemon_app/pages/home_page/screens/home_page.dart';
+import 'package:pokemon_app/pages/login_page/viewmodels/login_state.dart';
 import 'package:pokemon_app/pages/signup_page/screens/signup_screen.dart';
 import 'package:pokemon_app/values/app_colors.dart';
-import 'login_controller.dart';
+import '../viewmodels/login_controller.dart';
+import 'components/dialog.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({

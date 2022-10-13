@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokemon_app/models/pokemon.dart';
 import 'package:pokemon_app/values/app_colors.dart';
-import '../../home_page/home_controller.dart';
+import '../../home_page/viewmodels/home_provider.dart';
 import '../viewmodel/detail_provider.dart';
 import '../viewmodel/detail_state.dart';
 
@@ -153,10 +153,17 @@ class _DetailPageState extends ConsumerState<DetailPage> {
                               itemBuilder: (context, index){
                                 return Container(
                                   margin: const EdgeInsetsDirectional.only(top:10),
-                                  child: Row(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text('${ref.watch(getListCmtProvider)[ref.watch(getListCmtProvider).length-index-1].name.toString()}: ', style: const TextStyle(color: AppColors.textColor, fontSize: 14, fontWeight: FontWeight.w500),),
-                                      Container(margin: const EdgeInsetsDirectional.only(start: 20),child: Text(ref.watch(getListCmtProvider)[ref.watch(getListCmtProvider).length-index-1].desc, style: const TextStyle(color: AppColors.lightTextColor, fontSize: 14),))
+                                      Text(ref.watch(getListCmtProvider)[ref.watch(getListCmtProvider).length-index-1].name.toString(), style: const TextStyle(color: AppColors.textColor, fontSize: 14, fontWeight: FontWeight.w400),),
+                                      Container(margin: const EdgeInsetsDirectional.only(top: 5),child: Text(ref.watch(getListCmtProvider)[ref.watch(getListCmtProvider).length-index-1].desc, style: const TextStyle(color: AppColors.lightTextColor, fontSize: 14),)),
+                                      Container(
+                                        width: MediaQuery.of(context).size.width,
+                                        margin: const EdgeInsets.only(top: 5),
+                                        color: Colors.black26,
+                                        height: 1,
+                                      )
                                     ],
                                   ),
                                 );

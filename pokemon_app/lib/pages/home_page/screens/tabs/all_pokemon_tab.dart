@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokemon_app/models/pokemon.dart';
 import 'package:pokemon_app/values/app_colors.dart';
-import '../../../utils/utils.dart';
-import '../../detals_page/screens/detail_page.dart';
-import '../home_controller.dart';
+
+import '../../../../utils/utils.dart';
+import '../../../detals_page/screens/detail_page.dart';
+import '../../viewmodels/home_provider.dart';
 
 class AllPokemonTab extends ConsumerStatefulWidget {
   const AllPokemonTab({
