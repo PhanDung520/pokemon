@@ -149,7 +149,6 @@ class CommentNotifier extends StateNotifier<CommentState>{
       }
     }
     ref.read(getListCmtProvider.notifier).state = listCmt;
-    print('length: ${listCmt.length}');
   }
   
   Future<void> addComment(int pokeId,int userId,String desc, WidgetRef ref)async{

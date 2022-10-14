@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokemon_app/pages/home_page/screens/tabs/all_pokemon_tab.dart';
+import 'package:pokemon_app/pages/home_page/screens/tabs/dialog.dart';
 import 'package:pokemon_app/pages/home_page/screens/tabs/favourties.dart';
+import 'package:pokemon_app/pages/login_page/viewmodels/login_controller.dart';
 
 import 'package:pokemon_app/values/app_colors.dart';
 
@@ -41,10 +43,63 @@ class _HomePageState extends ConsumerState<HomePage> {
           actions: [
             InkWell(onTap: (){
               showModalBottomSheet(isScrollControlled: true,context: context, builder: (context){
-                return SizedBox(width: MediaQuery.of(context).size.width, height: MediaQuery.of(context).size.height,
-                    child: const Center(child:
-                      Text('Profile tab'),
-                    ),
+                return Padding(
+                  padding: const EdgeInsets.only(top: 30),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: InkWell(child: const Icon(Icons.close), onTap: (){
+                          Navigator.pop(context);
+                        },),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 30, top: 20),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.person, size: 30,),
+                            Text(ref.watch(userLoginProvider).nameDisplay, style: const TextStyle(color: AppColors.textColor),)
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 30, top: 10),
+                        child: Row(
+                          children: [
+                            const Text('Username: '),
+                            Container(
+                              child: Text(
+                                ref.watch(userLoginProvider).name
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 30, top: 10),
+                        child: Row(
+                          children: [
+                            const Text('Password: '),
+                            const Text('***********')
+                          ],
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 30),
+                            child: Container(height: 30, width: 60,alignment: Alignment.center,
+                            decoration: BoxDecoration(color: Colors.black26, borderRadius: BorderRadius.circular(12)),
+                            child: InkWell( onTap: (){
+                              showEditDialog(context, ref, widget.userId);
+                            },child: const Text('Edit')),
+                            ),
+                          )
+                        ],
+                      )
+                  ],),
                 );
               });
             },child: Container(height: 40, width: 40, alignment: Alignment.center, margin: const EdgeInsetsDirectional.only(end: 20),child: const Icon(Icons.person, color: Colors.black38,)))
