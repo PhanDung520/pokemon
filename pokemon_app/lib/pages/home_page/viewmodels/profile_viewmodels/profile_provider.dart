@@ -15,7 +15,7 @@ class ProfileNotifier extends StateNotifier<ProfileState>{
           'password': passNew,
           'name': newName
         }
-    ).then((value) => state = ProfileState.done())
-        .catchError((e)=>state = ProfileState.error());
+    ).then((value) => state = const ProfileState.done())
+        .catchError((e)=>state = const ProfileState.error());
   }
 }

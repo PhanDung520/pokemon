@@ -16,7 +16,7 @@ final userLoginProvider = StateProvider((ref) => User('name', 'password', 5, 'na
 final loginStateProvider = StateProvider((ref) => LoginState(LoginStatus.loading));
 
 class LoginController{
-  Future<void> Login(String name, String pass, WidgetRef ref) async{
+  Future<void> login(String name, String pass, WidgetRef ref) async{
     List<User> userList = [];
     await initUser(userList);
     int count =0;

@@ -76,10 +76,10 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                           if(controllerS1.text != '' && controllerS2.text != '' && controllerS3.text != ''){
                             ref.read(textSignUpStateProvider.notifier).state = 'loading ...';
                             await ref.read(signUpProvider.notifier).signUp(controllerS1.text, controllerS2.text, controllerS3.text);
-                            if(ref.watch(signUpProvider.notifier).state == const SignUpState.error()){
+                            if(ref.watch(signUpProvider) == const SignUpState.error()){
                              ref.read(textSignUpStateProvider.notifier).state = 'error';
                             }
-                            if(ref.watch(signUpProvider.notifier).state == const SignUpState.available()){
+                            if(ref.watch(signUpProvider) == const SignUpState.available()){
                               ref.read(textSignUpStateProvider.notifier).state = 'success';
                               await Future.delayed(const Duration(seconds: 1));
                               Navigator.push(context, MaterialPageRoute(builder: (context)=> const LoginPage()));

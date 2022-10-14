@@ -82,7 +82,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             onTap: () async {
                               String username = controller1.text;
                               String password = controller2.text;
-                              await loginController.Login(username, password, ref);
+                              await loginController.login(username, password, ref);
                               if(ref.watch(loginStateProvider).status == LoginStatus.success){
                                 showProgessCir(context);
                                 await Future.delayed(const Duration(seconds: 1));

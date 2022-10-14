@@ -21,11 +21,11 @@ showEditDialog(BuildContext context, WidgetRef ref, int userId) {
     child: const Text("edit"),
     onPressed: () async {
       await ref.read(profileNotifierProvider.notifier).EditPassword(c1.text, c2.text, userId);
-      if(ref.watch(profileNotifierProvider.notifier).state == ProfileState.done()){
+      if(ref.watch(profileNotifierProvider) == const ProfileState.done()){
         Navigator.of(context).pop();
         showDoneDialog(context, 'done');
       }
-      if(ref.watch(profileNotifierProvider.notifier).state == ProfileState.error()){
+      if(ref.watch(profileNotifierProvider) == const ProfileState.error()){
         Navigator.of(context).pop();
         showDoneDialog(context, 'error');
       }
@@ -35,25 +35,25 @@ showEditDialog(BuildContext context, WidgetRef ref, int userId) {
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
     title: const Text("Edit name and password"),
-    content: Container(height: MediaQuery.of(context).size.height*0.2 ,
+    content: SizedBox(height: MediaQuery.of(context).size.height*0.2 ,
     child: Column(children: [
       Row(
         children: [
-          Text('Username: '),
+          const Text('Username: '),
           Text(ref.watch(userLoginProvider).name)
         ],
       ),
       Row(
         children: [
-          Text('Password: '),
+          const Text('Password: '),
           Expanded(child:
-          TextField(style: TextStyle(color: AppColors.lightTextColor), controller: c1, obscureText: true,))
+          TextField(style: const TextStyle(color: AppColors.lightTextColor), controller: c1, obscureText: true,))
         ],
       ),
       Row(
         children: [
-          Text('Name: '),
-          Expanded(child: TextField(style: TextStyle(color: AppColors.lightTextColor),controller: c2,))
+          const Text('Name: '),
+          Expanded(child: TextField(style: const TextStyle(color: AppColors.lightTextColor),controller: c2,))
 
         ],
       )
@@ -86,7 +86,7 @@ showDoneDialog(BuildContext context, String text) {
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
     title: const Text("Toast"),
-    content: Container(height: MediaQuery.of(context).size.height*0.2 ,
+    content: SizedBox(height: MediaQuery.of(context).size.height*0.2 ,
       child: Center(child:
         Text(text),)),
     actions: [
