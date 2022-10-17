@@ -3,9 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokemon_app/pages/home_page/screens/tabs/all_pokemon_tab.dart';
 import 'package:pokemon_app/pages/home_page/screens/tabs/dialog.dart';
 import 'package:pokemon_app/pages/home_page/screens/tabs/favourties.dart';
+import 'package:pokemon_app/pages/login_page/screens/login_page.dart';
 import 'package:pokemon_app/pages/login_page/viewmodels/login_controller.dart';
 
 import 'package:pokemon_app/values/app_colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../detals_page/viewmodel/detail_provider.dart';
 
@@ -87,14 +89,26 @@ class _HomePageState extends ConsumerState<HomePage> {
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
+
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(top: 30),
+                            padding: const EdgeInsets.only(top: 30, right: 10),
                             child: Container(height: 30, width: 60,alignment: Alignment.center,
                             decoration: BoxDecoration(color: Colors.black26, borderRadius: BorderRadius.circular(12)),
                             child: InkWell( onTap: (){
                               showEditDialog(context, ref, widget.userId);
                             },child: const Text('Edit')),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 30, left: 10),
+                            child: Container(height: 30, width: 60,alignment: Alignment.center,
+                              decoration: BoxDecoration(color: Colors.black26, borderRadius: BorderRadius.circular(12)),
+                              child: InkWell( onTap: () async{
+                                final SharedPreferences shared = await SharedPreferences.getInstance();
+                                shared.remove('userId');
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginPage()));
+                              },child: const Text('Logout')),
                             ),
                           )
                         ],

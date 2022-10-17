@@ -41,6 +41,10 @@ dependencies:
   flutter_riverpod: ^2.0.0-dev.9
   freezed: ^2.1.1
   build_runner: ^2.2.1
+  sqflite: ^2.1.0+1
+  shared_preferences: ^2.0.15
+  connectivity_plus: ^2.3.9
+  path: ^1.8.2
 
 dev_dependencies:
   flutter_test:

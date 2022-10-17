@@ -4,6 +4,7 @@ import 'package:pokemon_app/pages/home_page/screens/home_page.dart';
 import 'package:pokemon_app/pages/login_page/viewmodels/login_state.dart';
 import 'package:pokemon_app/pages/signup_page/screens/signup_screen.dart';
 import 'package:pokemon_app/values/app_colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../viewmodels/login_controller.dart';
 import 'components/dialog.dart';
 
@@ -86,6 +87,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               if(ref.watch(loginStateProvider).status == LoginStatus.success){
                                 showProgessCir(context);
                                 await Future.delayed(const Duration(seconds: 1));
+                                final SharedPreferences shared = await SharedPreferences.getInstance();
+                                shared.setInt('userId', ref.watch(userLoginProvider).userId);
                                 Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(userId: ref.watch(userLoginProvider).userId)));
                               }
                               if(ref.watch(loginStateProvider).status == LoginStatus.errorUserPass){
@@ -103,11 +106,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               // ref.read(signUpProvider.notifier).signUp('name', 'password');
                               Navigator.push(context, MaterialPageRoute(builder: (context)=>const SignUpPage()));
                             },
-                                child: Container(child: const Text('Sign up!',style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)), height: 50, width: MediaQuery.of(context).size.width, alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      color: AppColors.primaryColor,
-                                      borderRadius: BorderRadius.circular(20)
-                                  ),
+                                child: Container(margin: EdgeInsets.symmetric(horizontal: 30),height: 50, width: MediaQuery.of(context).size.width, alignment: Alignment.center,child: const Text('Sign up!',style: TextStyle(color: Colors.lightBlueAccent, fontSize: 16, fontWeight: FontWeight.bold)),
                                 )),
                           )
                         ],
