@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokemon_app/pages/home_page/screens/home_page.dart';
 import 'package:pokemon_app/pages/login_page/screens/login_page.dart';
+import 'package:pokemon_app/utils/fetch_data_offline.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../reload_connection_page/screens/reload_screen.dart';

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokemon_app/models/pokemon.dart';
+import 'package:pokemon_app/utils/fetch_data_offline.dart';
 import 'package:pokemon_app/values/app_colors.dart';
 
 import '../../../../utils/utils.dart';
@@ -21,7 +22,9 @@ class _AllPokemonTabState extends ConsumerState<AllPokemonTab> {
   @override
   void initState() {
     // TODO: implement initState
-    pokeGet();//get data
+    pokeGet().whenComplete(() => {
+      fetchDataOffline(ref)
+    });//get data
     super.initState();
   }
 
