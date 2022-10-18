@@ -25,10 +25,10 @@ class _FavourtiesTabState extends ConsumerState<FavourtiesTab> {
     // TODO: implement didChangeDependencies
     if(widget.isConnet){
       ref.watch(favProvider3(widget.userId));
-      fetchFavoriteOffline(ref);
+      fetchFavoriteOffline(ref,widget.userId);
     }
     else{
-      fetchFavoriteOffline(ref);
+      fetchFavoriteOffline(ref, widget.userId);
     }
     super.didChangeDependencies();
   }

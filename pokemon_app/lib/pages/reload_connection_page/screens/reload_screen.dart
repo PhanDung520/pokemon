@@ -62,7 +62,7 @@ class _ReloadScreenState extends ConsumerState<ReloadScreen> {
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: Text(widget.isLogout ==false?'No internet connection! You must have a network for the first time to use this app':'Internet is requied when login',),
+              child: Text(widget.isLogout ==false?'No internet connection! You must have a network to use this app for the first time':'Internet is requied when login',),
             ),
             Container(
               margin: const EdgeInsets.only(top: 10),

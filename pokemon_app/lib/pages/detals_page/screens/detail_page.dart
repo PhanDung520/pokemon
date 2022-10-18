@@ -215,7 +215,6 @@ class _DetailPageState extends ConsumerState<DetailPage> {
                     detailController.checkFavourite(widget.pokemon, widget.userId, ref);
                   }
                 }
-
               },
               child: Container(alignment: Alignment.center,width:ref.watch(detailStateProvider) == DetailStatus.isNotFavourite ? 140 : 210,height: 50,decoration: BoxDecoration(color: ref.watch(detailStateProvider) == DetailStatus.isNotFavourite ?const Color(0xff3558CD):const Color(0xffD5DEFF),
                   borderRadius: BorderRadius.circular(20),

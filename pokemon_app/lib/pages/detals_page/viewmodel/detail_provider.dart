@@ -27,17 +27,18 @@ final addPokeToFavProvider = FutureProvider.family.autoDispose<void, MyParamsUse
   Map<String, dynamic> data ={};
   //set like +1
   int newLike = params.poke.like ;
+  await documentReference.set(data);
   var b = firestore.collection('pokemons').doc(params.poke.pokeId.toString()).get().then((value) => {
     newLike = int.parse(value.get('like').toString()) +1
-  });
-  await documentReference.set(data);
-  List<Future> listF=[];
-  var a = firestore.collection('pokemons').doc(params.poke.pokeId.toString()).update({
+  }).then((value) => {
+      firestore.collection('pokemons').doc(params.poke.pokeId.toString()).update({
     'like': newLike.toString()
+  })
   });
+  List<Future> listF=[];
+
   listF.add(b);
-  listF.add(a);
-  await Future.wait(listF);
+  var k = await Future.wait(listF);
   await firestore.collection('pokemons').doc(params.poke.pokeId.toString()).get().then((value) => {
     ref.read(likeCountProvider(params.poke).notifier).state = int.parse(value.get('like').toString())
   });
@@ -47,18 +48,20 @@ final addPokeToFavProvider = FutureProvider.family.autoDispose<void, MyParamsUse
 final removePokeFromPavProvider = FutureProvider.family.autoDispose<void, MyParamsUserIdPoke>((ref, params) async {
   DocumentReference documentReference = firestore.collection('users').doc(params.userId.toString()).collection('favourite').doc(params.poke.pokeId.toString());
   int newLike = params.poke.like ;
-  var b = firestore.collection('pokemons').doc(params.poke.pokeId.toString()).get().then((value) => {
-    newLike = int.parse(value.get('like').toString()) - 1
-  });
 
   await documentReference.delete();
-  List<Future> listF =[];
-  var a = firestore.collection('pokemons').doc(params.poke.pokeId.toString()).update({
+  var b = firestore.collection('pokemons').doc(params.poke.pokeId.toString()).get().then((value) => {
+    newLike = int.parse(value.get('like').toString()) - 1
+  }).then((value) => {
+      firestore.collection('pokemons').doc(params.poke.pokeId.toString()).update({
     'like': newLike.toString()
-  });
+  })
+
+});
+  List<Future> listF =[];
   listF.add(b);
-  listF.add(a);
-  await Future.wait(listF);
+  // listF.add(a);
+  var k = await Future.wait(listF);
   await firestore.collection('pokemons').doc(params.poke.pokeId.toString()).get().then((value) => {
     ref.read(likeCountProvider(params.poke).notifier).state = int.parse(value.get('like').toString())
   });
