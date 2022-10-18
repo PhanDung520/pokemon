@@ -5,6 +5,7 @@ import 'package:pokemon_app/pages/home_page/screens/tabs/dialog.dart';
 import 'package:pokemon_app/pages/home_page/screens/tabs/favourties.dart';
 import 'package:pokemon_app/pages/login_page/screens/login_page.dart';
 import 'package:pokemon_app/pages/login_page/viewmodels/login_controller.dart';
+import 'package:pokemon_app/utils/connection_provider.dart';
 
 import 'package:pokemon_app/values/app_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,9 +14,10 @@ import '../../detals_page/viewmodel/detail_provider.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({
-    Key? key, required this.userId
+    Key? key, required this.userId, required this.isConnect
   }) : super(key: key);
   final int userId;
+  final bool isConnect;
 
 
   @override
@@ -152,7 +154,7 @@ class _HomePageState extends ConsumerState<HomePage> {
           ),
         ),
         body: TabBarView(children: [
-          AllPokemonTab(userId: widget.userId,),
+          AllPokemonTab(userId: widget.userId, isConnect:ref.watch(connectivityProvider)),
           FavourtiesTab(userId: widget.userId,),
         ],),
       ),

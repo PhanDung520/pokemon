@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokemon_app/pages/splash_page/splash_screen.dart';
+import 'package:pokemon_app/utils/connection_provider.dart';
 
 class ReloadScreen extends ConsumerStatefulWidget {
   const ReloadScreen({
@@ -58,9 +59,9 @@ class _ReloadScreenState extends ConsumerState<ReloadScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('No internet connection!'),
+            const Text('No internet connection!'),
             Container(
-              margin: EdgeInsets.only(top: 10),
+              margin: const EdgeInsets.only(top: 10),
               height: 40,
               width: 90,
               decoration: BoxDecoration(
@@ -70,14 +71,15 @@ class _ReloadScreenState extends ConsumerState<ReloadScreen> {
               child: InkWell(
                 onTap: (){
                   if(connectivityResult != ConnectivityResult.none){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>SplashScreen()));
+                    ref.read(connectivityProvider.notifier).state = true;
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>const SplashScreen()));
                   }
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.refresh),
-                    Text('Reload')
+                    const Icon(Icons.refresh),
+                    const Text('Reload')
                   ],
                 ),
               ),

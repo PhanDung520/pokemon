@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pokemon_app/utils/connection_provider.dart';
 
 import '../../../../values/app_colors.dart';
 import '../../../detals_page/screens/detail_page.dart';
@@ -42,18 +44,25 @@ class _FavourtiesTabState extends ConsumerState<FavourtiesTab> {
           return InkWell(
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                  DetailPage(pokemon: data[index], userId: widget.userId,)));
+                  DetailPage(pokemon: data[index], userId: widget.userId,isConnect: ref.watch(connectivityProvider),)));
             },
-            child: Container(child: Column(
+            child: Container(decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                SizedBox(child: Image.network(data[index].image),
-                  height: 100,
+                SizedBox(height: 100,
                   width: MediaQuery
                       .of(context)
                       .size
-                      .width * 0.6,),
+                      .width * 0.6,child: CachedNetworkImage(
+                  imageUrl: data[index].image,
+                  progressIndicatorBuilder: (context, url, downloadProgress) =>
+                  CircularProgressIndicator(value: downloadProgress.progress),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+              ),),
                 Container(margin: const EdgeInsets.only(left: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -68,10 +77,6 @@ class _FavourtiesTabState extends ConsumerState<FavourtiesTab> {
                   ],),)
 
               ],),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-              ),
             ),
           );
         }),),

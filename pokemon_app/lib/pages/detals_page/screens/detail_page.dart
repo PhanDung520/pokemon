@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokemon_app/models/pokemon.dart';
+import 'package:pokemon_app/utils/connection_provider.dart';
 import 'package:pokemon_app/values/app_colors.dart';
 import '../../home_page/viewmodels/home_provider.dart';
 import '../viewmodel/detail_provider.dart';
@@ -8,10 +10,11 @@ import '../viewmodel/detail_state.dart';
 
 class DetailPage extends ConsumerStatefulWidget {
   const DetailPage({
-    Key? key, required this.pokemon, required this.userId
+    Key? key, required this.pokemon, required this.userId, required this.isConnect
   }) : super(key: key);
   final Pokemon pokemon;
   final int userId;
+  final isConnect;
 
   @override
   ConsumerState createState() => _DetailPageState();
@@ -23,9 +26,19 @@ class _DetailPageState extends ConsumerState<DetailPage> {
   @override
   void initState() {
     // TODO: implement initState
-    detailController.checkFavourite(widget.pokemon, widget.userId, ref);
-    ref.read(commentProvider.notifier).commentDisplay(widget.pokemon.pokeId, ref);
+    if(widget.isConnect){
+      detailController.checkFavourite(widget.pokemon, widget.userId, ref);
+      ref.read(commentProvider.notifier).commentDisplay(widget.pokemon.pokeId, ref);
+    }else{
+      return;
+    }
     super.initState();
+  }
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+
+    super.didChangeDependencies();
   }
   @override
   void dispose() {
@@ -66,7 +79,12 @@ class _DetailPageState extends ConsumerState<DetailPage> {
                         margin: const EdgeInsets.only(top: 20, left: 20, bottom: 20),
                       ),
                       Container(height: 125,margin: const EdgeInsets.only(bottom: 20, right: 20),child:
-                      Image.network(widget.pokemon.image),)
+                      CachedNetworkImage(
+                        imageUrl: widget.pokemon.image,
+                        progressIndicatorBuilder: (context, url, downloadProgress) =>
+                            CircularProgressIndicator(value: downloadProgress.progress),
+                        errorWidget: (context, url, error) => const Icon(Icons.error),
+                      ),)
                     ],
                   ),),
                 Container(width: MediaQuery.of(context).size.width,height: MediaQuery.of(context).size.height*0.1,color: Colors.white,child:
@@ -179,20 +197,25 @@ class _DetailPageState extends ConsumerState<DetailPage> {
             ),
             Positioned(bottom: 40, right: 20 ,child: InkWell(
               onTap: () async {
-                if(ref.watch(detailStateProvider) == DetailStatus.isNotFavourite){
-                  //add
-                  await ref.watch(addPokeToFavProvider(MyParamsUserIdPoke(userId: widget.userId, poke: widget.pokemon)));
-                  ref.refresh(favProvider3(widget.userId));
-                  ref.refresh(detailStateProvider);
-                  detailController.checkFavourite(widget.pokemon, widget.userId, ref);
+                if(ref.watch(connectivityProvider) == false){
+                  return;
+                }else{
+                  if(ref.watch(detailStateProvider) == DetailStatus.isNotFavourite){
+                    //add
+                    await ref.watch(addPokeToFavProvider(MyParamsUserIdPoke(userId: widget.userId, poke: widget.pokemon)));
+                    ref.refresh(favProvider3(widget.userId));
+                    ref.refresh(detailStateProvider);
+                    detailController.checkFavourite(widget.pokemon, widget.userId, ref);
+                  }
+                  if(ref.watch(detailStateProvider) == DetailStatus.isFavourite){
+                    //remove
+                    await ref.watch(removePokeFromPavProvider(MyParamsUserIdPoke(userId: widget.userId, poke: widget.pokemon)));
+                    ref.refresh(favProvider3(widget.userId));
+                    ref.refresh(detailStateProvider);
+                    detailController.checkFavourite(widget.pokemon, widget.userId, ref);
+                  }
                 }
-                if(ref.watch(detailStateProvider) == DetailStatus.isFavourite){
-                  //remove
-                  await ref.watch(removePokeFromPavProvider(MyParamsUserIdPoke(userId: widget.userId, poke: widget.pokemon)));
-                  ref.refresh(favProvider3(widget.userId));
-                  ref.refresh(detailStateProvider);
-                  detailController.checkFavourite(widget.pokemon, widget.userId, ref);
-                }
+
               },
               child: Container(alignment: Alignment.center,width:ref.watch(detailStateProvider) == DetailStatus.isNotFavourite ? 140 : 210,height: 50,decoration: BoxDecoration(color: ref.watch(detailStateProvider) == DetailStatus.isNotFavourite ?const Color(0xff3558CD):const Color(0xffD5DEFF),
                   borderRadius: BorderRadius.circular(20),
@@ -204,8 +227,7 @@ class _DetailPageState extends ConsumerState<DetailPage> {
                     )
                   ]
               ),
-                //ref.watch(detailStateProvider) == DetailStatus.isNotFavourite?'Mark as favourite':ref.watch(detailStateProvider) == DetailStatus.isFavourite?'Remove from favourites':'loading'
-                child: Text(ref.watch(detailStateProvider) == DetailStatus.isNotFavourite ? 'Mark as favourite' : ref.watch(detailStateProvider) == DetailStatus.isFavourite ? 'Remove from favourites' : 'loading', style: TextStyle(color: ref.watch(detailStateProvider) == DetailStatus.isNotFavourite ?Colors.white:const Color(0xff3558CD), fontWeight: FontWeight.w500),),
+                child: Text(ref.watch(connectivityProvider)==false? 'No Internet':ref.watch(detailStateProvider) == DetailStatus.isNotFavourite ? 'Mark as favourite' : ref.watch(detailStateProvider) == DetailStatus.isFavourite ? 'Remove from favourites' : 'loading', style: TextStyle(color: ref.watch(detailStateProvider) == DetailStatus.isNotFavourite ?Colors.white:const Color(0xff3558CD), fontWeight: FontWeight.w500),),
               ),
             ))
           ],

@@ -6,9 +6,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokemon_app/pages/home_page/screens/home_page.dart';
 import 'package:pokemon_app/pages/login_page/screens/login_page.dart';
-import 'package:pokemon_app/utils/fetch_data_offline.dart';
+import 'package:pokemon_app/utils/connection_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../utils/first_run_provider.dart';
 import '../reload_connection_page/screens/reload_screen.dart';
 
 int? finalUserId =0;
@@ -63,11 +64,12 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     if(sharedPreferences.getBool('firstRun') == null){
       sharedPreferences.setBool('firstRun', false);
       //lan dau
+      ref.read(isFirstRunProvider.notifier).state = true;
     }else{
       //lan thu >1
+      ref.read(isFirstRunProvider.notifier).state = false;
     }
   }
-
   @override
   initState() {
     _connectivitySubscription = _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
@@ -81,27 +83,28 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     if(connectivityResult == ConnectivityResult.none){
       //khong co mang
       print('khong co mang');
+      ref.read(connectivityProvider.notifier).state = false;
       getValidationData().whenComplete(() async{//finalUserId == null? LoginPage(): HomePage(userId: finalUserId as int)
-        Timer(Duration(seconds: 2),()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>
-        finalUserId == null? ReloadScreen(): HomePage(userId: finalUserId as int)
+        Timer(const Duration(seconds: 2),()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>
+        finalUserId == null? const ReloadScreen(): HomePage(userId: finalUserId as int, isConnect: false,)
         )));
       });
 
     }else{
       //co mang
       print('co mang');
+      ref.read(connectivityProvider.notifier).state = true;
       getValidationData().whenComplete(() async{//finalUserId == null? LoginPage(): HomePage(userId: finalUserId as int)
-        Timer(Duration(seconds: 2),()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>
-        finalUserId == null? LoginPage(): HomePage(userId: finalUserId as int)
+        Timer(const Duration(seconds: 2),()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>
+        finalUserId == null? const LoginPage(): HomePage(userId: finalUserId as int, isConnect: true,)
         )));
       });
     }
-
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
         child:
         CircularProgressIndicator()

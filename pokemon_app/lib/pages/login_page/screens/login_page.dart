@@ -89,7 +89,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 await Future.delayed(const Duration(seconds: 1));
                                 final SharedPreferences shared = await SharedPreferences.getInstance();
                                 shared.setInt('userId', ref.watch(userLoginProvider).userId);
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(userId: ref.watch(userLoginProvider).userId)));
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(userId: ref.watch(userLoginProvider).userId, isConnect: true,)));
                               }
                               if(ref.watch(loginStateProvider).status == LoginStatus.errorUserPass){
                                 showAlertDialog(context);

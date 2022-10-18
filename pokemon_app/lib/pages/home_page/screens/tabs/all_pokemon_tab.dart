@@ -1,7 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokemon_app/models/pokemon.dart';
-import 'package:pokemon_app/utils/fetch_data_offline.dart';
+import 'package:pokemon_app/offline/viewmodels/fetch_data_offline.dart';
+import 'package:pokemon_app/utils/connection_provider.dart';
 import 'package:pokemon_app/values/app_colors.dart';
 
 import '../../../../utils/utils.dart';
@@ -10,9 +12,11 @@ import '../../viewmodels/home_provider.dart';
 
 class AllPokemonTab extends ConsumerStatefulWidget {
   const AllPokemonTab({
-    Key? key, required this.userId
+    Key? key, required this.userId, required this.isConnect
   }) : super(key: key);
   final int userId;
+  final bool isConnect;
+
 
   @override
   ConsumerState createState() => _AllPokemonTabState();
@@ -22,9 +26,14 @@ class _AllPokemonTabState extends ConsumerState<AllPokemonTab> {
   @override
   void initState() {
     // TODO: implement initState
-    pokeGet().whenComplete(() => {
-      fetchDataOffline(ref)
-    });//get data
+
+    if(widget.isConnect == true){
+      pokeGet().whenComplete(() => {
+        fetchDataOffline(ref)
+      });//get data
+    }else{
+      fetchDataOffline(ref);
+    }
     super.initState();
   }
 
@@ -48,10 +57,16 @@ class _AllPokemonTabState extends ConsumerState<AllPokemonTab> {
         return InkWell(
           onTap: (){
             //move to details
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>DetailPage(pokemon: data[index], userId: widget.userId,)));
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>DetailPage(pokemon: data[index], userId: widget.userId,isConnect: ref.watch(connectivityProvider),)));
           },
           child: Container( child: Column(crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.spaceAround,children: [
-            SizedBox(child: Image.network(data[index].image),height: 100,width: MediaQuery.of(context).size.width*0.6,),
+            Container(alignment: Alignment.center,child: CachedNetworkImage(
+          imageUrl: data[index].image,
+            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                CircularProgressIndicator(value: downloadProgress.progress),
+            errorWidget: (context, url, error) => Icon(Icons.error),
+          ),
+              height: 100,width: MediaQuery.of(context).size.width*0.6,),
             Container(margin: const EdgeInsets.only(left: 10),child: Column(crossAxisAlignment: CrossAxisAlignment.start,children: [
               Text('#${data[index].pokeId.toString()}'),
               Text(data[index].name, style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),),
