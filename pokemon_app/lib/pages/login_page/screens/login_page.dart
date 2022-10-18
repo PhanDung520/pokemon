@@ -45,7 +45,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           children: [
             SizedBox(
               width: MediaQuery.of(context).size.width,
-              child: Image.asset('assets/images/blob_bg.png'),
+              child: Image.asset('assets/images/bg_png.png'),
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -106,7 +106,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               // ref.read(signUpProvider.notifier).signUp('name', 'password');
                               Navigator.push(context, MaterialPageRoute(builder: (context)=>const SignUpPage()));
                             },
-                                child: Container(margin: EdgeInsets.symmetric(horizontal: 30),height: 50, width: MediaQuery.of(context).size.width, alignment: Alignment.center,child: const Text('Sign up!',style: TextStyle(color: Colors.lightBlueAccent, fontSize: 16, fontWeight: FontWeight.bold)),
+                                child: Container(margin: const EdgeInsets.symmetric(horizontal: 30),height: 50, width: MediaQuery.of(context).size.width, alignment: Alignment.center,child: const Text('Sign up!',style: TextStyle(color: Colors.lightBlueAccent, fontSize: 16, fontWeight: FontWeight.bold)),
                                 )),
                           )
                         ],

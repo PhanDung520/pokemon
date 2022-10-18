@@ -9,8 +9,9 @@ import 'package:pokemon_app/utils/connection_provider.dart';
 
 class ReloadScreen extends ConsumerStatefulWidget {
   const ReloadScreen({
-    Key? key,
+    Key? key, required this.isLogout
   }) : super(key: key);
+  final bool isLogout;
 
   @override
   ConsumerState createState() => _ReloadScreenState();
@@ -59,7 +60,10 @@ class _ReloadScreenState extends ConsumerState<ReloadScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('No internet connection!'),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: Text(widget.isLogout ==false?'No internet connection! You must have a network for the first time to use this app':'Internet is requied when login',),
+            ),
             Container(
               margin: const EdgeInsets.only(top: 10),
               height: 40,

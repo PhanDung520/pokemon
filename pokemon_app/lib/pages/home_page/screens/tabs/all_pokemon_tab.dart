@@ -25,8 +25,6 @@ class AllPokemonTab extends ConsumerStatefulWidget {
 class _AllPokemonTabState extends ConsumerState<AllPokemonTab> {
   @override
   void initState() {
-    // TODO: implement initState
-
     if(widget.isConnect == true){
       pokeGet().whenComplete(() => {
         fetchDataOffline(ref)
@@ -59,24 +57,23 @@ class _AllPokemonTabState extends ConsumerState<AllPokemonTab> {
             //move to details
             Navigator.push(context, MaterialPageRoute(builder: (context)=>DetailPage(pokemon: data[index], userId: widget.userId,isConnect: ref.watch(connectivityProvider),)));
           },
-          child: Container( child: Column(crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.spaceAround,children: [
-            Container(alignment: Alignment.center,child: CachedNetworkImage(
+          child: Container( decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            ), child: Column(crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.spaceAround,children: [
+            Container(alignment: Alignment.center,
+              height: 100,width: MediaQuery.of(context).size.width*0.6,child: CachedNetworkImage(
           imageUrl: data[index].image,
             progressIndicatorBuilder: (context, url, downloadProgress) =>
                 CircularProgressIndicator(value: downloadProgress.progress),
             errorWidget: (context, url, error) => Icon(Icons.error),
-          ),
-              height: 100,width: MediaQuery.of(context).size.width*0.6,),
+          ),),
             Container(margin: const EdgeInsets.only(left: 10),child: Column(crossAxisAlignment: CrossAxisAlignment.start,children: [
               Text('#${data[index].pokeId.toString()}'),
               Text(data[index].name, style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),),
               Text(data[index].class1, style: const TextStyle(color: AppColors.lightTextColor, fontSize: 14),)
             ],),)
           ],),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-            ),
           ),
         );
       }),),

@@ -13,8 +13,6 @@ showEditDialog(BuildContext context, WidgetRef ref, int userId) {
     child: const Text("cancel"),
     onPressed: () {
       Navigator.of(context).pop();
-      c1.dispose();
-      c2.dispose();
     },
   );
   Widget editButton = TextButton(
@@ -35,7 +33,7 @@ showEditDialog(BuildContext context, WidgetRef ref, int userId) {
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
     title: const Text("Edit name and password"),
-    content: SizedBox(height: MediaQuery.of(context).size.height*0.2 ,
+    content: SizedBox(height: MediaQuery.of(context).size.height*0.16 ,
     child: Column(children: [
       Row(
         children: [
@@ -45,14 +43,14 @@ showEditDialog(BuildContext context, WidgetRef ref, int userId) {
       ),
       Row(
         children: [
-          const Text('Password: '),
+          Container(alignment: Alignment.bottomLeft,width: 100,child: const Text('Password: ')),
           Expanded(child:
           TextField(style: const TextStyle(color: AppColors.lightTextColor), controller: c1, obscureText: true,))
         ],
       ),
       Row(
         children: [
-          const Text('Name: '),
+          Container(alignment: Alignment.bottomLeft,width: 100,child: const Text('Name: ')),
           Expanded(child: TextField(style: const TextStyle(color: AppColors.lightTextColor),controller: c2,))
 
         ],
@@ -86,7 +84,7 @@ showDoneDialog(BuildContext context, String text) {
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
     title: const Text("Toast"),
-    content: SizedBox(height: MediaQuery.of(context).size.height*0.2 ,
+    content: SizedBox(height: MediaQuery.of(context).size.height*0.15 ,
       child: Center(child:
         Text(text),)),
     actions: [

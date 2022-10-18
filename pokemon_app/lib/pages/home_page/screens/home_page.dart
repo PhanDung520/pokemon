@@ -5,6 +5,7 @@ import 'package:pokemon_app/pages/home_page/screens/tabs/dialog.dart';
 import 'package:pokemon_app/pages/home_page/screens/tabs/favourties.dart';
 import 'package:pokemon_app/pages/login_page/screens/login_page.dart';
 import 'package:pokemon_app/pages/login_page/viewmodels/login_controller.dart';
+import 'package:pokemon_app/pages/reload_connection_page/screens/reload_screen.dart';
 import 'package:pokemon_app/utils/connection_provider.dart';
 
 import 'package:pokemon_app/values/app_colors.dart';
@@ -95,11 +96,18 @@ class _HomePageState extends ConsumerState<HomePage> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(top: 30, right: 10),
-                            child: Container(height: 30, width: 60,alignment: Alignment.center,
-                            decoration: BoxDecoration(color: Colors.black26, borderRadius: BorderRadius.circular(12)),
-                            child: InkWell( onTap: (){
-                              showEditDialog(context, ref, widget.userId);
-                            },child: const Text('Edit')),
+                            child: InkWell(
+                              onTap:(){
+                                if(ref.watch(connectivityProvider)){
+                                  showEditDialog(context, ref, widget.userId);
+                                }else{
+                                  showDoneDialog(context, 'no internet');
+                                }
+                              },
+                              child: Container(height: 30, width: 60,alignment: Alignment.center,
+                              decoration: BoxDecoration(color: Colors.black26, borderRadius: BorderRadius.circular(12)),
+                              child: const Text('Edit'),
+                              ),
                             ),
                           ),
                           Padding(
@@ -107,9 +115,15 @@ class _HomePageState extends ConsumerState<HomePage> {
                             child: Container(height: 30, width: 60,alignment: Alignment.center,
                               decoration: BoxDecoration(color: Colors.black26, borderRadius: BorderRadius.circular(12)),
                               child: InkWell( onTap: () async{
-                                final SharedPreferences shared = await SharedPreferences.getInstance();
-                                shared.remove('userId');
-                                Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginPage()));
+                                if(ref.watch(connectivityProvider)){
+                                  final SharedPreferences shared = await SharedPreferences.getInstance();
+                                  shared.remove('userId');
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=> const LoginPage()));
+                                }else{
+                                  final SharedPreferences shared = await SharedPreferences.getInstance();
+                                  shared.remove('userId');
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=> const ReloadScreen(isLogout: true,)));
+                                }
                               },child: const Text('Logout')),
                             ),
                           )

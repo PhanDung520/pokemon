@@ -86,10 +86,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       ref.read(connectivityProvider.notifier).state = false;
       getValidationData().whenComplete(() async{//finalUserId == null? LoginPage(): HomePage(userId: finalUserId as int)
         Timer(const Duration(seconds: 2),()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>
-        finalUserId == null? const ReloadScreen(): HomePage(userId: finalUserId as int, isConnect: false,)
+        finalUserId == null? const ReloadScreen(isLogout: false,): HomePage(userId: finalUserId as int, isConnect: false,)
         )));
       });
-
     }else{
       //co mang
       print('co mang');
@@ -101,7 +100,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       });
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
