@@ -169,7 +169,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         ),
         body: TabBarView(children: [
           AllPokemonTab(userId: widget.userId, isConnect:ref.watch(connectivityProvider)),
-          FavourtiesTab(userId: widget.userId,),
+          FavourtiesTab(userId: widget.userId,isConnet: ref.watch(connectivityProvider)),
         ],),
       ),
     );

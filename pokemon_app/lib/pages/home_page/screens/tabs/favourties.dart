@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pokemon_app/offline/viewmodels/fetch_data_offline.dart';
 import 'package:pokemon_app/utils/connection_provider.dart';
 import '../../../../values/app_colors.dart';
 import '../../../detals_page/screens/detail_page.dart';
@@ -8,9 +9,10 @@ import '../../../detals_page/viewmodel/detail_provider.dart';
 
 class FavourtiesTab extends ConsumerStatefulWidget {
   const FavourtiesTab({
-    Key? key, required this.userId
+    Key? key, required this.userId, required this.isConnet
   }) : super(key: key);
   final int userId;
+  final bool isConnet;
 
   @override
   ConsumerState createState() => _FavourtiesTabState();
@@ -21,7 +23,13 @@ class _FavourtiesTabState extends ConsumerState<FavourtiesTab> {
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
-    ref.watch(favProvider3(widget.userId));
+    if(widget.isConnet){
+      ref.watch(favProvider3(widget.userId));
+      fetchFavoriteOffline(ref);
+    }
+    else{
+      fetchFavoriteOffline(ref);
+    }
     super.didChangeDependencies();
   }
   @override
