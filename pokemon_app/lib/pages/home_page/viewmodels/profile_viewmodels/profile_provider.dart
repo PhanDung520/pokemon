@@ -9,7 +9,7 @@ final profileNotifierProvider = StateNotifierProvider<ProfileNotifier,ProfileSta
 
 class ProfileNotifier extends StateNotifier<ProfileState>{
   ProfileNotifier(): super(const ProfileState.loading());
-  Future<void> EditPassword(String passNew,String newName, int userId) async{
+  Future<void> editPassword(String passNew,String newName, int userId) async{
     await firestore.collection('users').doc(userId.toString()).update(
         {
           'password': passNew,

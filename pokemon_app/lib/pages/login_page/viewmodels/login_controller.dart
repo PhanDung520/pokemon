@@ -6,9 +6,9 @@ import '../../../utils/utils.dart';
 
 Future<void> initUser(List<User> listUser) async{
   await firestore.collection('users').get().then((value) => {
-    value.docs.forEach((element) {
-      listUser.add(User(element['username'], element['password'], int.parse(element['userId'].toString()), element['name']));
-    })
+    for(var element in value.docs){
+      listUser.add(User(element['username'], element['password'], int.parse(element['userId'].toString()), element['name']))
+    }
   });
 }
 

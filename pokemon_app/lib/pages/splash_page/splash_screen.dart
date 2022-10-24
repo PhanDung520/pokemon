@@ -32,7 +32,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     try{
       result = await _connectivity.checkConnectivity();
     }on PlatformException catch(e){
-      print(e.toString());
+      debugPrint(e.toString());
       return;
     }
     if(!mounted){
@@ -82,7 +82,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   Future movePage()async{
     if(connectivityResult == ConnectivityResult.none){
       //khong co mang
-      print('khong co mang');
       ref.read(connectivityProvider.notifier).state = false;
       getValidationData().whenComplete(() async{//finalUserId == null? LoginPage(): HomePage(userId: finalUserId as int)
         Timer(const Duration(seconds: 2),()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>
@@ -91,7 +90,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       });
     }else{
       //co mang
-      print('co mang');
       ref.read(connectivityProvider.notifier).state = true;
       getValidationData().whenComplete(() async{//finalUserId == null? LoginPage(): HomePage(userId: finalUserId as int)
         Timer(const Duration(seconds: 2),()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>

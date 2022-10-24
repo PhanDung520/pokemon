@@ -18,8 +18,9 @@ showEditDialog(BuildContext context, WidgetRef ref, int userId) {
   Widget editButton = TextButton(
     child: const Text("edit"),
     onPressed: () async {
-      await ref.read(profileNotifierProvider.notifier).EditPassword(c1.text, c2.text, userId);
+      await ref.read(profileNotifierProvider.notifier).editPassword(c1.text, c2.text, userId);
       if(ref.watch(profileNotifierProvider) == const ProfileState.done()){
+
         Navigator.of(context).pop();
         showDoneDialog(context, 'done');
       }

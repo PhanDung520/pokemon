@@ -15,9 +15,9 @@ class SignUpNotifier extends StateNotifier<SignUpState> {
     //get the last id
     int idLast = 0;
     await firestore.collection('users').get().then((value) => {
-      value.docs.forEach((element) {
-        idLast = int.parse(element.id);
-      })
+      for(var element in value.docs){
+        idLast = int.parse(element.id)
+      }
     });
     if(idLast == 0){
       //error

@@ -73,10 +73,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                         child: Row(
                           children: [
                             const Text('Username: '),
-                            Container(
-                              child: Text(
-                                ref.watch(userLoginProvider).name
-                              ),
+                            Text(
+                              ref.watch(userLoginProvider).name
                             )
                           ],
                         ),
@@ -84,9 +82,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                       Padding(
                         padding: const EdgeInsets.only(left: 30, top: 10),
                         child: Row(
-                          children: [
-                            const Text('Password: '),
-                            const Text('***********')
+                          children: const [
+                            Text('Password: '),
+                            Text('***********')
                           ],
                         ),
                       ),
@@ -118,10 +116,16 @@ class _HomePageState extends ConsumerState<HomePage> {
                                 if(ref.watch(connectivityProvider)){
                                   final SharedPreferences shared = await SharedPreferences.getInstance();
                                   shared.remove('userId');
+                                  if (!mounted){
+                                    return;
+                                  }
                                   Navigator.push(context, MaterialPageRoute(builder: (context)=> const LoginPage()));
                                 }else{
                                   final SharedPreferences shared = await SharedPreferences.getInstance();
                                   shared.remove('userId');
+                                  if (!mounted){
+                                    return;
+                                  }
                                   Navigator.push(context, MaterialPageRoute(builder: (context)=> const ReloadScreen(isLogout: true,)));
                                 }
                               },child: const Text('Logout')),
@@ -155,11 +159,11 @@ class _HomePageState extends ConsumerState<HomePage> {
                       height: 15,
                       margin: const EdgeInsets.only(bottom: 10, left: 2),
                       alignment: Alignment.center,
-                      child: Text(ref.watch(fProvider3).length.toString(), style: const TextStyle(color: Colors.white, fontSize: 11),),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
                           color: AppColors.primaryColor
                       ),
+                      child: Text(ref.watch(fProvider3).length.toString(), style: const TextStyle(color: Colors.white, fontSize: 11),),
                     ),
                   )
                 ],

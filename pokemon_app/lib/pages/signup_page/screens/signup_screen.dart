@@ -82,14 +82,17 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                             if(ref.watch(signUpProvider) == const SignUpState.available()){
                               ref.read(textSignUpStateProvider.notifier).state = 'success';
                               await Future.delayed(const Duration(seconds: 1));
+                              if(!mounted){
+                                return;
+                              }
                               Navigator.push(context, MaterialPageRoute(builder: (context)=> const LoginPage()));
                             }
                           }
                         },
-                        child: Container(width: MediaQuery.of(context).size.width, height: 50, alignment: Alignment.center,child: Text(ref.watch(textSignUpStateProvider), style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),),decoration: BoxDecoration(
+                        child: Container(width: MediaQuery.of(context).size.width, height: 50, alignment: Alignment.center,decoration: BoxDecoration(
                             color: AppColors.primaryColor,
                             borderRadius: BorderRadius.circular(20)
-                        ),),
+                        ),child: Text(ref.watch(textSignUpStateProvider), style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),),),
                       ),
                     ),
                   ],

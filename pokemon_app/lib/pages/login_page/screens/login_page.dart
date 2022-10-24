@@ -85,20 +85,29 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               String password = controller2.text;
                               await loginController.login(username, password, ref);
                               if(ref.watch(loginStateProvider).status == LoginStatus.success){
+                                if(!mounted){
+                                  return;
+                                }
                                 showProgessCir(context);
                                 await Future.delayed(const Duration(seconds: 1));
                                 final SharedPreferences shared = await SharedPreferences.getInstance();
                                 shared.setInt('userId', ref.watch(userLoginProvider).userId);
+                                if(!mounted){
+                                  return;
+                                }
                                 Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(userId: ref.watch(userLoginProvider).userId, isConnect: true,)));
                               }
                               if(ref.watch(loginStateProvider).status == LoginStatus.errorUserPass){
+                                if(!mounted){
+                                  return;
+                                }
                                 showAlertDialog(context);
                               }
                             },
-                            child: Container(width: MediaQuery.of(context).size.width, height: 50, alignment: Alignment.center,child: const Text('Login', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),),decoration: BoxDecoration(
+                            child: Container(width: MediaQuery.of(context).size.width, height: 50, alignment: Alignment.center,decoration: BoxDecoration(
                                 color: AppColors.primaryColor,
                                 borderRadius: BorderRadius.circular(20)
-                            ),),
+                            ),child: const Text('Login', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),),),
                           ),
                           Container(
                             margin: const EdgeInsets.only(top: 20),

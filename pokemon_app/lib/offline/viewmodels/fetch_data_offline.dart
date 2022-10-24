@@ -61,7 +61,7 @@ void fetchFavoriteOffline(WidgetRef ref, int userId) async {
   // Avoid errors caused by flutter upgrade.
   WidgetsFlutterBinding.ensureInitialized();
   final database = openDatabase(
-    join(await getDatabasesPath(), 'favorite${userId}.db'),
+    join(await getDatabasesPath(), 'favorite$userId.db'),
     onCreate: (db, version) {
       return db.execute(
         'CREATE TABLE favorite(pokeId INTEGER PRIMARY KEY, class1 TEXT,image TEXT,name TEXT, attack INTEGER, height INTEGER,hp INTEGER,speed INTEGER,weight INTEGER,like INTEGER)',

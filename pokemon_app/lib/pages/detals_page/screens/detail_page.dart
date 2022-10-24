@@ -14,7 +14,7 @@ class DetailPage extends ConsumerStatefulWidget {
   }) : super(key: key);
   final Pokemon pokemon;
   final int userId;
-  final isConnect;
+  final bool isConnect;
 
   @override
   ConsumerState createState() => _DetailPageState();
@@ -53,7 +53,7 @@ class _DetailPageState extends ConsumerState<DetailPage> {
         appBar: AppBar(
           backgroundColor: const Color(0xffF3F9EF),
           elevation: 2,
-          leading: IconButton(icon:const Icon(Icons.arrow_back_ios), color: const Color(0xffCC000000), onPressed: () {
+          leading: IconButton(icon:const Icon(Icons.arrow_back_ios), color: AppColors.lightTextColor, onPressed: () {
             Navigator.pop(context);
             ref.refresh(favProvider(widget.userId));
           },),
@@ -69,6 +69,7 @@ class _DetailPageState extends ConsumerState<DetailPage> {
                   child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Container(
+                        margin: const EdgeInsets.only(top: 20, left: 20, bottom: 20),
                         child: Column(crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: [
                           Column( crossAxisAlignment: CrossAxisAlignment.start,children: [
                             Text(widget.pokemon.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30, color: AppColors.textColor),),
@@ -76,7 +77,6 @@ class _DetailPageState extends ConsumerState<DetailPage> {
                           ],),
                           Text('#${widget.pokemon.pokeId}')
                         ],),
-                        margin: const EdgeInsets.only(top: 20, left: 20, bottom: 20),
                       ),
                       Container(height: 125,margin: const EdgeInsets.only(bottom: 20, right: 20),child:
                       CachedNetworkImage(

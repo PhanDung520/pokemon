@@ -26,7 +26,7 @@ class _ReloadScreenState extends ConsumerState<ReloadScreen> {
     try{
       result = await _connectivity.checkConnectivity();
     }on PlatformException catch(e){
-      print(e.toString());
+      debugPrint(e.toString());
       return;
     }
     if(!mounted){
@@ -81,9 +81,9 @@ class _ReloadScreenState extends ConsumerState<ReloadScreen> {
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.refresh),
-                    const Text('Reload')
+                  children:const [
+                    Icon(Icons.refresh),
+                    Text('Reload')
                   ],
                 ),
               ),

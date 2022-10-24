@@ -38,7 +38,7 @@ final addPokeToFavProvider = FutureProvider.family.autoDispose<void, MyParamsUse
   List<Future> listF=[];
 
   listF.add(b);
-  var k = await Future.wait(listF);
+  await Future.wait(listF);
   await firestore.collection('pokemons').doc(params.poke.pokeId.toString()).get().then((value) => {
     ref.read(likeCountProvider(params.poke).notifier).state = int.parse(value.get('like').toString())
   });
@@ -61,7 +61,7 @@ final removePokeFromPavProvider = FutureProvider.family.autoDispose<void, MyPara
   List<Future> listF =[];
   listF.add(b);
   // listF.add(a);
-  var k = await Future.wait(listF);
+  await Future.wait(listF);
   await firestore.collection('pokemons').doc(params.poke.pokeId.toString()).get().then((value) => {
     ref.read(likeCountProvider(params.poke).notifier).state = int.parse(value.get('like').toString())
   });
@@ -76,16 +76,17 @@ Future<void> getListFa2(int userId, List<Pokemon> listFa) async{
       if(i <100){
         listPokeId.add(i);
       }
-    })
+    }
+    )
   });
   List<Future> listF = [];
   //tim kiem voi poke id
-  listPokeId.forEach((element)  {
+  for (var element in listPokeId) {
     var a = firestore.collection('pokemons').doc(element.toString()).get().then((documentSnapshot){
       listFa.add(Pokemon(documentSnapshot['class'], documentSnapshot['attack'], documentSnapshot['height'], documentSnapshot['hp'], documentSnapshot['id'], documentSnapshot['image'], documentSnapshot['name'], documentSnapshot['speed'], documentSnapshot['weight'],int.parse(documentSnapshot['like'].toString())));
     });
     listF.add(a);
-  });
+  }
   await Future.wait(listF);
 }
 
@@ -105,13 +106,13 @@ class DetailController{
     List<Pokemon> listFav = [];
     int count =0;
     await getListFa2(userId,listFav);
-    listFav.forEach((element) {
+    for (var element in listFav) {
       if(element.pokeId == pokemon.pokeId){
         //this poke is in fav
         ref.read(detailStateProvider.notifier).state = DetailStatus.isFavourite;
         count =1;
       }
-    });
+    }
     if(count ==0){
       ref.read(detailStateProvider.notifier).state = DetailStatus.isNotFavourite;
     }
@@ -129,18 +130,18 @@ class CommentNotifier extends StateNotifier<CommentState>{
   Future<void> commentDisplay(int pokeId, WidgetRef ref) async{
     List<Comment> listCmt = [];
     await firestore.collection('pokemons').doc(pokeId.toString()).collection('cmt').get().then((value) => {
-      value.docs.forEach((element) {
+      for(var element in value.docs){
         if(int.parse(element['cmtId']) !=999){
-          listCmt.add(Comment(int.parse(element['userId']), int.parse(element['cmtId']), element['desc'], ''));
+        listCmt.add(Comment(int.parse(element['userId']), int.parse(element['cmtId']), element['desc'], ''))
         }
-      })
+      }
     });
     // get all user
     List<User> userList =[];
     await firestore.collection('users').get().then((value) => {
-      value.docs.forEach((element) {
-        userList.add(User(element['username'], element['password'], int.parse(element['userId']), element['name']));
-      })
+      for(var element in value.docs){
+        userList.add(User(element['username'], element['password'], int.parse(element['userId']), element['name']))
+    }
     });
 
     for(Comment cmt in listCmt){
@@ -158,11 +159,11 @@ class CommentNotifier extends StateNotifier<CommentState>{
     //get the last id
     int idLast =0;
     await firestore.collection('pokemons').doc(pokeId.toString()).collection('cmt').get().then((value) => {
-      value.docs.forEach((element) {
+      for(var element in value.docs){
         if(int.parse(element['cmtId'])!= 999){
-          idLast = int.parse(element['cmtId']);
+          idLast = int.parse(element['cmtId'])
         }
-      })
+      }
     });
     if(idLast == 0){
       //error

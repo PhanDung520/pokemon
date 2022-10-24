@@ -35,9 +35,9 @@ final favProvider = StreamProvider.family.autoDispose<List<Pokemon>, int>((ref, 
 final pokeGetProvider = FutureProvider<List<Pokemon>>((ref) async {
   List<Pokemon> listPoke = [];
   await firestore.collection('pokemons').get().then((value) => {
-    value.docs.forEach((element) {
-      listPoke.add(Pokemon(element['class'], element['attack'], element['height'], element['hp'], element['id'], element['image'], element['name'], element['speed'], element['weight'], int.parse(element['like'].toString())));
-    })
+    for(var element in value.docs){
+      listPoke.add(Pokemon(element['class'], element['attack'], element['height'], element['hp'], element['id'], element['image'], element['name'], element['speed'], element['weight'], int.parse(element['like'].toString())))
+    }
   });
   return listPoke;
 });

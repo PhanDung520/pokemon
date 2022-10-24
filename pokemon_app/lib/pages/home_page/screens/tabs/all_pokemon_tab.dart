@@ -39,9 +39,9 @@ class _AllPokemonTabState extends ConsumerState<AllPokemonTab> {
     List<Pokemon> listPoke =[];
     if(mounted){
       await firestore.collection('pokemons').get().then((value) => {
-        value.docs.forEach((element) {
-          listPoke.add(Pokemon(element['class'], element['attack'], element['height'], element['hp'], element['id'], element['image'], element['name'], element['speed'], element['weight'], int.parse(element['like'].toString())));
-        })
+        for(var element in value.docs){
+          listPoke.add(Pokemon(element['class'], element['attack'], element['height'], element['hp'], element['id'], element['image'], element['name'], element['speed'], element['weight'], int.parse(element['like'].toString())))
+        }
       });
       ref.read(pokeGet2Provider.notifier).state = listPoke;
     }
@@ -66,7 +66,7 @@ class _AllPokemonTabState extends ConsumerState<AllPokemonTab> {
           imageUrl: data[index].image,
             progressIndicatorBuilder: (context, url, downloadProgress) =>
                 CircularProgressIndicator(value: downloadProgress.progress),
-            errorWidget: (context, url, error) => Icon(Icons.error),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
           ),),
             Container(margin: const EdgeInsets.only(left: 10),child: Column(crossAxisAlignment: CrossAxisAlignment.start,children: [
               Text('#${data[index].pokeId.toString()}'),
