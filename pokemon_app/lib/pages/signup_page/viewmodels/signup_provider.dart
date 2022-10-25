@@ -1,8 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokemon_app/pages/signup_page/viewmodels/signup_state.dart';
 import 'package:pokemon_app/utils/utils.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-final textSignUpStateProvider = StateProvider((ref) =>'Sign up!');
+
+final textSignUpStateProvider = StateProvider.family((ref, BuildContext context) =>AppLocalizations.of(context)!.signup);
 
 
 final signUpProvider = StateNotifierProvider<SignUpNotifier, SignUpState>((ref) {

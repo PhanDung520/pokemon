@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 showAlertDialog(BuildContext context) {
 
   // set up the button
   Widget okButton = TextButton(
-    child: const Text("OK"),
+    child: Text(AppLocalizations.of(context)!.ok),
     onPressed: () {
       Navigator.of(context).pop();
     },
@@ -12,8 +13,8 @@ showAlertDialog(BuildContext context) {
 
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
-    title: const Text("Error login"),
-    content: const Text("Wrong Username or password!"),
+    title: Text(AppLocalizations.of(context)!.errorLogin),
+    content: Text(AppLocalizations.of(context)!.errorLogin2),
     actions: [
       okButton,
     ],
@@ -40,7 +41,7 @@ showProgessCir(BuildContext context) {
 showAlertDialogIfError(BuildContext context) {
   // set up the button
   Widget okButton = TextButton(
-    child: const Text("OK"),
+    child: Text(AppLocalizations.of(context)!.ok),
     onPressed: () {
       Navigator.of(context).pop();
     },
@@ -48,8 +49,8 @@ showAlertDialogIfError(BuildContext context) {
 
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
-    title: const Text("Error login"),
-    content: const Text("Error Internet"),
+    title: Text(AppLocalizations.of(context)!.errorLogin),
+    content: Text(AppLocalizations.of(context)!.errorInternet),
     actions: [
       okButton,
     ],

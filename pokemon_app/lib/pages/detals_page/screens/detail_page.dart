@@ -7,6 +7,8 @@ import 'package:pokemon_app/values/app_colors.dart';
 import '../../home_page/viewmodels/home_provider.dart';
 import '../viewmodel/detail_provider.dart';
 import '../viewmodel/detail_state.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class DetailPage extends ConsumerStatefulWidget {
   const DetailPage({
@@ -97,21 +99,21 @@ class _DetailPageState extends ConsumerState<DetailPage> {
                         SizedBox(
                           height: MediaQuery.of(context).size.height*0.05,
                           child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: [
-                            const Text('Height', style:  TextStyle(color: AppColors.lightTextColor, fontSize: 12),),
+                            Text(AppLocalizations.of(context)!.height, style:  TextStyle(color: AppColors.lightTextColor, fontSize: 12),),
                             Text(widget.pokemon.height.toString(), style: const TextStyle(color: AppColors.textColor, fontWeight: FontWeight.w500),)
                           ],),
                         ),
                         SizedBox(
                           height: MediaQuery.of(context).size.height*0.05,
                           child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: [
-                            const Text('Weight', style: TextStyle(color: AppColors.lightTextColor, fontSize: 12),),
+                            Text(AppLocalizations.of(context)!.weight, style: TextStyle(color: AppColors.lightTextColor, fontSize: 12),),
                             Text(widget.pokemon.weight.toString(), style: const TextStyle(color: AppColors.textColor, fontWeight: FontWeight.w500),)
                           ],),
                         ),
                         SizedBox(
                           height: MediaQuery.of(context).size.height*0.05,
                           child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: [
-                            const Text('Heightx', style: TextStyle(color: AppColors.lightTextColor, fontSize: 12),),
+                            Text(AppLocalizations.of(context)!.tall, style: TextStyle(color: AppColors.lightTextColor, fontSize: 12),),
                             Text(widget.pokemon.height.toString(), style: const TextStyle(color: AppColors.textColor, fontWeight: FontWeight.w500),)
                           ],),
                         )
@@ -122,7 +124,7 @@ class _DetailPageState extends ConsumerState<DetailPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Icon(Icons.favorite, color: Colors.black26,),
-                          Text('${ref.watch(likeCountProvider(widget.pokemon))} likes', style: const TextStyle(color: AppColors.lightTextColor),)
+                          Text('${ref.watch(likeCountProvider(widget.pokemon))} ${AppLocalizations.of(context)!.like}', style: const TextStyle(color: AppColors.lightTextColor),)
                         ],
                       ),
                     )
@@ -149,9 +151,9 @@ class _DetailPageState extends ConsumerState<DetailPage> {
                                 width: MediaQuery.of(context).size.width*0.7,
                                 child: TextField(
                                   controller: controllerk1,
-                                  decoration: const InputDecoration(
+                                  decoration: InputDecoration(
                                     border: InputBorder.none,
-                                    hintText: ' comment...',
+                                    hintText: AppLocalizations.of(context)!.comment,
                                     hintStyle: TextStyle(color: AppColors.lightTextColor, fontSize: 14)
                                   ),
                                 ),
@@ -226,7 +228,7 @@ class _DetailPageState extends ConsumerState<DetailPage> {
                     )
                   ]
               ),
-                child: Text(ref.watch(connectivityProvider)==false? 'No Internet':ref.watch(detailStateProvider) == DetailStatus.isNotFavourite ? 'Mark as favourite' : ref.watch(detailStateProvider) == DetailStatus.isFavourite ? 'Remove from favourites' : 'loading', style: TextStyle(color: ref.watch(detailStateProvider) == DetailStatus.isNotFavourite ?Colors.white:const Color(0xff3558CD), fontWeight: FontWeight.w500),),
+                child: Text(ref.watch(connectivityProvider)==false? 'No Internet':ref.watch(detailStateProvider) == DetailStatus.isNotFavourite ? AppLocalizations.of(context)!.markAsFav : ref.watch(detailStateProvider) == DetailStatus.isFavourite ? AppLocalizations.of(context)!.removeFromFav : AppLocalizations.of(context)!.loading, style: TextStyle(color: ref.watch(detailStateProvider) == DetailStatus.isNotFavourite ?Colors.white:const Color(0xff3558CD), fontWeight: FontWeight.w500),),
               ),
             ))
           ],

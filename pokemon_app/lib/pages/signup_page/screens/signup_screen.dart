@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokemon_app/pages/login_page/screens/login_page.dart';
 import 'package:pokemon_app/pages/signup_page/viewmodels/signup_provider.dart';
 import 'package:pokemon_app/pages/signup_page/viewmodels/signup_state.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../values/app_colors.dart';
 
 class SignUpPage extends ConsumerStatefulWidget {
@@ -41,8 +41,8 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                   children: [
                     TextField(
                       controller: controllerS1,
-                      decoration: const InputDecoration(
-                          hintText: 'User name',
+                      decoration: InputDecoration(
+                          hintText: AppLocalizations.of(context)!.username,
                           hintStyle:  TextStyle(color: AppColors.lightTextColor, fontSize: 14)
                       ),
                     ),
@@ -53,8 +53,8 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                         enableSuggestions: false,
                         autocorrect: false,
                         controller: controllerS2,
-                        decoration: const InputDecoration(
-                            hintText: 'Password',
+                        decoration: InputDecoration(
+                            hintText: AppLocalizations.of(context)!.password,
                             hintStyle:  TextStyle(color: AppColors.lightTextColor, fontSize: 14)
                         ),
                       ),
@@ -63,8 +63,8 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                       margin: const EdgeInsets.only(top: 15),
                       child: TextField(
                         controller: controllerS3,
-                        decoration: const InputDecoration(
-                            hintText: 'Name',
+                        decoration: InputDecoration(
+                            hintText: AppLocalizations.of(context)!.name,
                             hintStyle:  TextStyle(color: AppColors.lightTextColor, fontSize: 14)
                         ),
                       ),
@@ -74,13 +74,13 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                       child: InkWell(
                         onTap: () async {
                           if(controllerS1.text != '' && controllerS2.text != '' && controllerS3.text != ''){
-                            ref.read(textSignUpStateProvider.notifier).state = 'loading ...';
+                            ref.read(textSignUpStateProvider(context).notifier).state = AppLocalizations.of(context)!.loading ;
                             await ref.read(signUpProvider.notifier).signUp(controllerS1.text, controllerS2.text, controllerS3.text);
                             if(ref.watch(signUpProvider) == const SignUpState.error()){
-                             ref.read(textSignUpStateProvider.notifier).state = 'error';
+                             ref.read(textSignUpStateProvider(context).notifier).state = AppLocalizations.of(context)!.error;
                             }
                             if(ref.watch(signUpProvider) == const SignUpState.available()){
-                              ref.read(textSignUpStateProvider.notifier).state = 'success';
+                              ref.read(textSignUpStateProvider(context).notifier).state = AppLocalizations.of(context)!.success;
                               await Future.delayed(const Duration(seconds: 1));
                               if(!mounted){
                                 return;
@@ -92,7 +92,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                         child: Container(width: MediaQuery.of(context).size.width, height: 50, alignment: Alignment.center,decoration: BoxDecoration(
                             color: AppColors.primaryColor,
                             borderRadius: BorderRadius.circular(20)
-                        ),child: Text(ref.watch(textSignUpStateProvider), style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),),),
+                        ),child: Text(ref.watch(textSignUpStateProvider(context)), style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),),),
                       ),
                     ),
                   ],

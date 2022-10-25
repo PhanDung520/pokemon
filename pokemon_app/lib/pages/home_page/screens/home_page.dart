@@ -10,7 +10,7 @@ import 'package:pokemon_app/utils/connection_provider.dart';
 
 import 'package:pokemon_app/values/app_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../detals_page/viewmodel/detail_provider.dart';
 
 class HomePage extends ConsumerStatefulWidget {
@@ -72,7 +72,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                         padding: const EdgeInsets.only(left: 30, top: 10),
                         child: Row(
                           children: [
-                            const Text('Username: '),
+                            Text('${AppLocalizations.of(context)!.username}: '),
                             Text(
                               ref.watch(userLoginProvider).name
                             )
@@ -82,8 +82,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                       Padding(
                         padding: const EdgeInsets.only(left: 30, top: 10),
                         child: Row(
-                          children: const [
-                            Text('Password: '),
+                          children: [
+                            Text('${AppLocalizations.of(context)!.password}: '),
                             Text('***********')
                           ],
                         ),
@@ -104,13 +104,13 @@ class _HomePageState extends ConsumerState<HomePage> {
                               },
                               child: Container(height: 30, width: 60,alignment: Alignment.center,
                               decoration: BoxDecoration(color: Colors.black26, borderRadius: BorderRadius.circular(12)),
-                              child: const Text('Edit'),
+                              child: Text(AppLocalizations.of(context)!.edit),
                               ),
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(top: 30, left: 10),
-                            child: Container(height: 30, width: 60,alignment: Alignment.center,
+                            child: Container(height: 30, width: 85,alignment: Alignment.center,
                               decoration: BoxDecoration(color: Colors.black26, borderRadius: BorderRadius.circular(12)),
                               child: InkWell( onTap: () async{
                                 if(ref.watch(connectivityProvider)){
@@ -128,7 +128,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                   }
                                   Navigator.push(context, MaterialPageRoute(builder: (context)=> const ReloadScreen(isLogout: true,)));
                                 }
-                              },child: const Text('Logout')),
+                              },child: Text(AppLocalizations.of(context)!.logout)),
                             ),
                           )
                         ],
@@ -139,19 +139,19 @@ class _HomePageState extends ConsumerState<HomePage> {
             },child: Container(height: 40, width: 40, alignment: Alignment.center, margin: const EdgeInsetsDirectional.only(end: 20),child: const Icon(Icons.person, color: Colors.black38,)))
           ],
           backgroundColor: Colors.white,
-          title: const Text('Pokemon App', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),),
+          title: Text(AppLocalizations.of(context)!.pokemonapp, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),),
           centerTitle: true ,
           bottom: TabBar(
             indicatorWeight: 4,
             indicatorColor: AppColors.primaryColor,
             tabs: [
-              const Tab(
-                child: Text('All Pokemon', style: TextStyle(color: AppColors.textColor, fontSize: 16, fontWeight: FontWeight.w500),),
+              Tab(
+                child: Text(AppLocalizations.of(context)!.allPokemon, style: TextStyle(color: AppColors.textColor, fontSize: 16, fontWeight: FontWeight.w500),),
               ),
               Tab(child:
               Row(
                 children: [
-                  const Text('Favourites', style: TextStyle(fontSize: 16, color: AppColors.textColor, fontWeight: FontWeight.w500),),
+                  Text(AppLocalizations.of(context)!.favorite, style: TextStyle(fontSize: 16, color: AppColors.textColor, fontWeight: FontWeight.w500),),
                   Visibility(
                     visible: true,
                     child: Container(

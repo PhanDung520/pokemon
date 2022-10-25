@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -62,7 +62,7 @@ class _ReloadScreenState extends ConsumerState<ReloadScreen> {
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: Text(widget.isLogout ==false?'No internet connection! You must have a network to use this app for the first time':'Internet is requied when login',),
+              child: Text(widget.isLogout ==false?AppLocalizations.of(context)!.reload1:AppLocalizations.of(context)!.reload2,),
             ),
             Container(
               margin: const EdgeInsets.only(top: 10),
