@@ -42,7 +42,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   firebase_core: ^1.23.0
   cloud_firestore: ^3.4.9
-  flutter_riverpod: ^2.0.0-dev.9
   freezed: ^2.1.1
   build_runner: ^2.2.1
   sqflite: ^2.1.0+1

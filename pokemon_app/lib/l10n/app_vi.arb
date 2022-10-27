@@ -1,0 +1,41 @@
+{
+    "helloWorld": "Xin chào",
+    "login": "Đăng nhập",
+    "signup": "Đăng ký!",
+    "username": "Tên người dùng",
+    "password": "Mật khẩu",
+    "name": "Tên",
+    "pokemonapp": "Ứng dụng Pokemon",
+    "allPokemon": "Tất cả Pokemon",
+    "favorite": "Yêu thích",
+    "edit": "Sửa",
+    "logout": "Đăng xuất",
+    "height": "Chiều cao",
+    "weight": "Cân nặng",
+    "tall": "Độ dài",
+    "comment": "bình luận...",
+    "markAsFav": "Thêm vào yêu thích",
+    "removeFromFav": "Xóa khỏi yêu thích",
+    "loading": "Đang tải...",
+    "like": "lượt thích",
+    "done": "Xong!",
+    "error": "Lỗi!",
+    "notification": "Thông báo!",
+    "ok": "Xong!",
+    "reload1": "Không có mạng, bạn phải có mạng trong lần đầu tiên sử dụng ứng dụng!",
+    "reload2": "Cần phải có mạng để có thể đăng nhập!",
+    "errorLogin": "Đăng nhập không thành công!",
+    "errorLogin2": "Sai tên đăng nhập hoặc mật khẩu",
+    "errorInternet": "Error Internet",
+    "cancel": "thoát",
+    "success": "Thành công!",
+    "editAll": "Sửa tên và mật khẩu"
+
+
+
+
+
+
+
+
+}
