@@ -23,7 +23,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState>{
       for(User user in listUser){
         if(user.username == event.username && user.password == event.password){
           count =1;
-          return emitter(LoginSuccess());
+          return emitter(LoginSuccess(user: user));
         }
       }
       if(count == 0){

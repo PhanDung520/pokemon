@@ -89,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               listener: (context, state) async{
                                 if(state is LoginSuccess){
                                   await Future.delayed(Duration(seconds: 1));
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen(userId: 1, isConnect: true)));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen(userId: state.user.userId, isConnect: true)));
                                 }
                                 if(state is LoginError){
                                   print('hello error');
