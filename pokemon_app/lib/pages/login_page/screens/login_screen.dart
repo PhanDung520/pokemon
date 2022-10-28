@@ -30,96 +30,96 @@ class _LoginScreenState extends State<LoginScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      body: BlocProvider(
-        create: (context) => LoginBloc(),
-        child: SingleChildScrollView(
-              physics: const NeverScrollableScrollPhysics(),
-              child: Column(
-                children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: Image.asset('assets/images/bg_png.png'),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    margin: const EdgeInsets.only(top: 20),
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height*0.4,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          TextField(
-                            controller: controller1,
-                            decoration: InputDecoration(
-                                hintText: AppLocalizations.of(context)!.username,
-                                hintStyle:  const TextStyle(color: AppColors.lightTextColor, fontSize: 14)
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(top: 15),
-                            child: TextField(
-                              obscureText: true,
-                              enableSuggestions: false,
-                              autocorrect: false,
-                              controller: controller2,
-                              decoration: InputDecoration(
-                                  hintText: AppLocalizations.of(context)!.password,
-                                  hintStyle:  const TextStyle(color: AppColors.lightTextColor, fontSize: 14)
-                              ),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(top: 40),
-                            child: Column(
-                              children: [
-                                BlocConsumer<LoginBloc, LoginState>(
-                                    builder: (context, state){
-                                      return InkWell(
-                                          onTap: () async {
-                                            context.read<LoginBloc>().add(await LoginSubmitted(username: controller1.text, password: controller2.text));
-                                          },
-                                          child: Container(width: MediaQuery.of(context).size.width, height: 50, alignment: Alignment.center,decoration: BoxDecoration(
-                                              color: AppColors.primaryColor,
-                                              borderRadius: BorderRadius.circular(20)
-                                          ),child: Text(state.toString(), style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),),)
-                                      );
-                                    },
-                                    listener: (context, state) async{
-                                      if(state is LoginSuccess){
-                                        await Future.delayed(Duration(seconds: 1));
-                                        Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen(userId: 1, isConnect: true)));
-                                      }
-                                      if(state is LoginError){
-                                        print('hello error');
-                                        showAlertDialog(context);
-                                      }
-                                    },
-                                  listenWhen: (context, state){
-                                      return state is LoginSuccess || state is LoginError;
-                                  },
-                                    ),
-                                Container(
-                                  margin: const EdgeInsets.only(top: 20),
-                                  child: InkWell(onTap: (){
-                                    // ref.read(signUpProvider.notifier).signUp('name', 'password');
-                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>const SignUpScreen()));
-                                  },
-                                      child: Container(margin: const EdgeInsets.symmetric(horizontal: 30),height: 50, width: MediaQuery.of(context).size.width, alignment: Alignment.center,child: Text(AppLocalizations.of(context)!.signup,style: TextStyle(color: Colors.lightBlueAccent, fontSize: 16, fontWeight: FontWeight.bold)),
-                                      )),
-                                )
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+    return BlocProvider(
+      create: (context) => LoginBloc(),
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        body: SingleChildScrollView(
+          physics: const NeverScrollableScrollPhysics(),
+          child: Column(
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: Image.asset('assets/images/bg_png.png'),
               ),
-            ),
-),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                margin: const EdgeInsets.only(top: 20),
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height*0.4,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      TextField(
+                        controller: controller1,
+                        decoration: InputDecoration(
+                            hintText: AppLocalizations.of(context)!.username,
+                            hintStyle:  const TextStyle(color: AppColors.lightTextColor, fontSize: 14)
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(top: 15),
+                        child: TextField(
+                          obscureText: true,
+                          enableSuggestions: false,
+                          autocorrect: false,
+                          controller: controller2,
+                          decoration: InputDecoration(
+                              hintText: AppLocalizations.of(context)!.password,
+                              hintStyle:  const TextStyle(color: AppColors.lightTextColor, fontSize: 14)
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(top: 40),
+                        child: Column(
+                          children: [
+                            BlocConsumer<LoginBloc, LoginState>(
+                              builder: (context, state){
+                                return InkWell(
+                                    onTap: () async {
+                                      context.read<LoginBloc>().add(await LoginSubmitted(username: controller1.text, password: controller2.text));
+                                    },
+                                    child: Container(width: MediaQuery.of(context).size.width, height: 50, alignment: Alignment.center,decoration: BoxDecoration(
+                                        color: AppColors.primaryColor,
+                                        borderRadius: BorderRadius.circular(20)
+                                    ),child: Text(state is LoginInitial? 'Login': state is LoginLoading? 'Loading...': state is LoginSuccess? 'Success!': 'Error!', style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),),)
+                                );
+                              },
+                              listener: (context, state) async{
+                                if(state is LoginSuccess){
+                                  await Future.delayed(Duration(seconds: 1));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen(userId: 1, isConnect: true)));
+                                }
+                                if(state is LoginError){
+                                  print('hello error');
+                                  showAlertDialog(context);
+                                }
+                              },
+                              listenWhen: (context, state){
+                                return state is LoginSuccess || state is LoginError;
+                              },
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(top: 20),
+                              child: InkWell(onTap: (){
+                                // ref.read(signUpProvider.notifier).signUp('name', 'password');
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=>const SignUpScreen()));
+                              },
+                                  child: Container(margin: const EdgeInsets.symmetric(horizontal: 30),height: 50, width: MediaQuery.of(context).size.width, alignment: Alignment.center,child: Text(AppLocalizations.of(context)!.signup,style: TextStyle(color: Colors.lightBlueAccent, fontSize: 16, fontWeight: FontWeight.bold)),
+                                  )),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

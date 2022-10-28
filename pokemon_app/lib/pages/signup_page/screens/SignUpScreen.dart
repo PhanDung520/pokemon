@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pokemon_app/pages/home_page/screens/bloc/allpokemon_bloc/allpokemon_bloc.dart';
 import 'package:pokemon_app/pages/login_page/screens/login_screen.dart';
 import 'package:pokemon_app/pages/signup_page/bloc/signup_event.dart';
 
@@ -21,11 +22,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController controllerS3 = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      body: BlocProvider(
-        create: (context) => SignUpBloc(),
-        child: SingleChildScrollView(
+    return BlocProvider(
+      create: (context) => SignUpBloc(),
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        body: SingleChildScrollView(
           physics: const NeverScrollableScrollPhysics(),
           child: Column(
             children: [
@@ -83,14 +84,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           },
                           builder: (context, state) {
                             return InkWell(
-                            onTap: () async {
-                              context.read<SignUpBloc>().add(SignUpSubmitted(username: controllerS1.text, password: controllerS2.text, name: controllerS3.text));
-                            },
-                            child: Container(width: MediaQuery.of(context).size.width, height: 50, alignment: Alignment.center,decoration: BoxDecoration(
-                                color: AppColors.primaryColor,
-                                borderRadius: BorderRadius.circular(20)
-                            ),child: Text(state.toString(), style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),),),
-                          );
+                              onTap: () async {
+                                context.read<SignUpBloc>().add(SignUpSubmitted(username: controllerS1.text, password: controllerS2.text, name: controllerS3.text));
+                              },
+                              child: Container(width: MediaQuery.of(context).size.width, height: 50, alignment: Alignment.center,decoration: BoxDecoration(
+                                  color: AppColors.primaryColor,
+                                  borderRadius: BorderRadius.circular(20)
+                              ),child: Text(state is SignUpInitial? 'Sign Up!': state is SignUpLoading? 'Loading...': state is SignUpSuccess? 'Success!': 'Error', style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),),),
+                            );
                           },
                         ),
                       ),

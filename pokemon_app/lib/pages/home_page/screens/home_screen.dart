@@ -143,7 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Visibility(
                       visible: true,
                       child: Container(
-                        width: 40,
+                        width: 15,
                         height: 15,
                         margin: const EdgeInsets.only(bottom: 10, left: 2),
                         alignment: Alignment.center,
@@ -153,7 +153,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         child: BlocBuilder<AllPokeBloc, AllPokeState>(
                             builder: (context, state){
-                              return Text(state.props.toList().length.toString(), style: const TextStyle(color: Colors.white, fontSize: 11),);
+                              if(state is AllSuccess){
+                                return Text(state.listPoke.length.toString(), style: const TextStyle(color: Colors.white, fontSize: 11),);
+                              }
+                              else return Text('0', style: const TextStyle(color: Colors.white, fontSize: 11),);
                             },
                           buildWhen: (context, state){
                               return state is AllSuccess;
