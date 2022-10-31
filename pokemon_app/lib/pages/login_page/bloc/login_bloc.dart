@@ -14,8 +14,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState>{
     // emit la hanh dong phat ra event
     emit(LoginLoading());
     final listUser = await _tryGetAllUser();
-    if(listUser.length == 0){
-      print('list user is null');
+    if(listUser.isEmpty){
       return emitter(LoginError());
     }else{
       //tim user trong list
@@ -27,9 +26,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState>{
         }
       }
       if(count == 0){
-        print('user length: ${listUser.length}');
-        print('username: ${event.username} ${event.password}');
-        print('cannt find this user');
         return emitter(LoginError());
       }
     }

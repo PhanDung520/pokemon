@@ -1,14 +1,16 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pokemon_app/models/user.dart';
 import 'package:pokemon_app/pages/home_page/screens/home_screen.dart';
 import 'package:pokemon_app/pages/login_page/screens/login_screen.dart';
 import 'package:pokemon_app/pages/reload_page/screens/reload_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-int? finalUserId =0;
+User? finalUserId;
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -47,8 +49,10 @@ class _SplashScreenState extends State<SplashScreen> {
   }
   Future getValidationData() async{
     final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var obtainedEmail = sharedPreferences.getInt('userId');
-    finalUserId = obtainedEmail;
+    var obtainedUser = sharedPreferences.getString('user');
+    if(obtainedUser!= null){
+      finalUserId = User.fromJson(jsonDecode(obtainedUser));
+    }
     //check first run
     await afterFirstCheck();
   }
@@ -67,18 +71,16 @@ class _SplashScreenState extends State<SplashScreen> {
   Future movePage()async{
     if(connectivityResult == ConnectivityResult.none){
       //khong co mang
-      //ref.read(connectivityProvider.notifier).state = false;
       getValidationData().whenComplete(() async{//finalUserId == null? LoginPage(): HomePage(userId: finalUserId as int)
         Timer(const Duration(seconds: 2),()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>
-        finalUserId == null? const ReloadScreen(isLogout: false,): HomeScreen(userId: finalUserId as int, isConnect: false,)
+        finalUserId == null? const ReloadScreen(isLogout: false,): HomeScreen(user: finalUserId as User, isConnect: false,)
         )));
       });
     }else{
       //co mang
-      //ref.read(connectivityProvider.notifier).state = true;
       getValidationData().whenComplete(() async{//finalUserId == null? LoginPage(): HomePage(userId: finalUserId as int)
         Timer(const Duration(seconds: 2),()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>
-        finalUserId == null? const LoginScreen(): HomeScreen(userId: finalUserId as int, isConnect: true,)
+        finalUserId == null? const LoginScreen(): HomeScreen(user: finalUserId as User, isConnect: true,)
         )));
       });
     }
@@ -94,7 +96,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
         child: CircularProgressIndicator(),
       ),
