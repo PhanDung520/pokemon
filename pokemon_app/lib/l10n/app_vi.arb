@@ -26,7 +26,7 @@
     "reload2": "Cần phải có mạng để có thể đăng nhập!",
     "errorLogin": "Đăng nhập không thành công!",
     "errorLogin2": "Sai tên đăng nhập hoặc mật khẩu",
-    "errorInternet": "Error Internet",
+    "errorInternet": "Không Internet",
     "cancel": "thoát",
     "success": "Thành công!",
     "editAll": "Sửa tên và mật khẩu"

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:pokemon_app/pages/home_page/screens/bloc/allpokemon_bloc/allpokemon_bloc.dart';
 import 'package:pokemon_app/pages/login_page/screens/login_screen.dart';
 import 'package:pokemon_app/pages/signup_page/bloc/signup_event.dart';
 
@@ -46,7 +45,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         controller: controllerS1,
                         decoration: InputDecoration(
                             hintText: AppLocalizations.of(context)!.username,
-                            hintStyle:  TextStyle(color: AppColors.lightTextColor, fontSize: 14)
+                            hintStyle:  const TextStyle(color: AppColors.lightTextColor, fontSize: 14)
                         ),
                       ),
                       Container(
@@ -58,7 +57,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           controller: controllerS2,
                           decoration: InputDecoration(
                               hintText: AppLocalizations.of(context)!.password,
-                              hintStyle:  TextStyle(color: AppColors.lightTextColor, fontSize: 14)
+                              hintStyle:  const TextStyle(color: AppColors.lightTextColor, fontSize: 14)
                           ),
                         ),
                       ),
@@ -68,7 +67,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           controller: controllerS3,
                           decoration: InputDecoration(
                               hintText: AppLocalizations.of(context)!.name,
-                              hintStyle:  TextStyle(color: AppColors.lightTextColor, fontSize: 14)
+                              hintStyle:  const TextStyle(color: AppColors.lightTextColor, fontSize: 14)
                           ),
                         ),
                       ),
@@ -78,8 +77,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           listener: (context, state) async {
                             // TODO: implement listener
                             if(state is SignUpSuccess){
-                              await Future.delayed(Duration(seconds: 1));
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+                              await Future.delayed(const Duration(seconds: 1));
+                              if(!mounted){
+                                return;
+                              }
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
                             }
                           },
                           builder: (context, state) {

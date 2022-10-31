@@ -3,6 +3,7 @@ import 'package:pokemon_app/pages/home_page/screens/bloc/allpokemon_bloc/allpoke
 import 'package:pokemon_app/pages/home_page/screens/bloc/allpokemon_bloc/allpokemon_state.dart';
 
 import '../../../../../models/pokemon/pokemon.dart';
+import '../../../../../offline/fetch_data_offline.dart';
 import '../../../../../utils/firebase_reference.dart';
 
 class AllPokeBloc extends Bloc<AllPokeEvent, AllPokeState>{
@@ -10,13 +11,18 @@ class AllPokeBloc extends Bloc<AllPokeEvent, AllPokeState>{
     on<LoadAllPokemon>(_onLoadAllPokemon);
   }
 
-  Future<void> _onLoadAllPokemon(AllPokeEvent event, Emitter emitter) async {
+  Future<void> _onLoadAllPokemon(LoadAllPokemon event, Emitter emitter) async {
     emit(AllLoading());
-    final listPoke = await pokeGet();
-    if(listPoke.length ==0){
-      return emitter(AllError());
-    }else{
-      return emitter(AllSuccess(listPoke: listPoke));
+    if(event.isConnect){
+      final listPoke = await pokeGet();
+      if(listPoke.isEmpty){
+        return emitter(AllError());
+      }else{
+        await fetchDataOffline(listPoke, event.isConnect);
+        return emitter(AllSuccess(listPoke: listPoke));
+      }
+    }else {
+      return emitter(AllSuccess(listPoke: await fetchDataOffline([], event.isConnect)));
     }
   }
 

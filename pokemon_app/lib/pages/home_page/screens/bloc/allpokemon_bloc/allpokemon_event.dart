@@ -7,4 +7,7 @@ abstract class AllPokeEvent extends Equatable{
   List<Object?> get props => [];
 }
 
-class LoadAllPokemon extends AllPokeEvent{}
+class LoadAllPokemon extends AllPokeEvent{
+  const LoadAllPokemon({required this.isConnect});
+  final bool isConnect;
+}

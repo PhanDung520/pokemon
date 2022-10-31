@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -6,6 +8,7 @@ import 'package:pokemon_app/pages/login_page/bloc/login_bloc.dart';
 import 'package:pokemon_app/pages/login_page/bloc/login_event.dart';
 import 'package:pokemon_app/pages/login_page/bloc/login_state.dart';
 import 'package:pokemon_app/pages/signup_page/screens/SignUpScreen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../values/app_colors.dart';
 import 'dialogs/dialogs.dart';
@@ -78,21 +81,29 @@ class _LoginScreenState extends State<LoginScreen> {
                               builder: (context, state){
                                 return InkWell(
                                     onTap: () async {
-                                      context.read<LoginBloc>().add(await LoginSubmitted(username: controller1.text, password: controller2.text));
+                                      context.read<LoginBloc>().add(LoginSubmitted(username: controller1.text, password: controller2.text));
                                     },
                                     child: Container(width: MediaQuery.of(context).size.width, height: 50, alignment: Alignment.center,decoration: BoxDecoration(
                                         color: AppColors.primaryColor,
                                         borderRadius: BorderRadius.circular(20)
-                                    ),child: Text(state is LoginInitial? 'Login': state is LoginLoading? 'Loading...': state is LoginSuccess? 'Success!': 'Error!', style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),),)
+                                    ),child: Text(state is LoginInitial? AppLocalizations.of(context)!.login: state is LoginLoading? AppLocalizations.of(context)!.loading: state is LoginSuccess? AppLocalizations.of(context)!.success: AppLocalizations.of(context)!.error, style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),),)
                                 );
                               },
                               listener: (context, state) async{
                                 if(state is LoginSuccess){
-                                  await Future.delayed(Duration(seconds: 1));
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen(userId: state.user.userId, isConnect: true)));
+                                  await Future.delayed(const Duration(seconds: 1));
+                                  final SharedPreferences shared = await SharedPreferences.getInstance();
+                                  final map= state.user.toJson();
+                                  shared.setString('user', jsonEncode(map));
+                                  if(!mounted){
+                                    return;
+                                  }
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen(user: state.user, isConnect: true)));
                                 }
                                 if(state is LoginError){
-                                  print('hello error');
+                                  if(!mounted){
+                                    return;
+                                  }
                                   showAlertDialog(context);
                                 }
                               },
@@ -103,10 +114,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             Container(
                               margin: const EdgeInsets.only(top: 20),
                               child: InkWell(onTap: (){
-                                // ref.read(signUpProvider.notifier).signUp('name', 'password');
                                 Navigator.push(context, MaterialPageRoute(builder: (context)=>const SignUpScreen()));
                               },
-                                  child: Container(margin: const EdgeInsets.symmetric(horizontal: 30),height: 50, width: MediaQuery.of(context).size.width, alignment: Alignment.center,child: Text(AppLocalizations.of(context)!.signup,style: TextStyle(color: Colors.lightBlueAccent, fontSize: 16, fontWeight: FontWeight.bold)),
+                                  child: Container(margin: const EdgeInsets.symmetric(horizontal: 30),height: 50, width: MediaQuery.of(context).size.width, alignment: Alignment.center,child: Text(AppLocalizations.of(context)!.signup,style: const TextStyle(color: Colors.lightBlueAccent, fontSize: 16, fontWeight: FontWeight.bold)),
                                   )),
                             )
                           ],
