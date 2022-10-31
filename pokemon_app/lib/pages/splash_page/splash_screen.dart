@@ -86,8 +86,11 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     // TODO: implement initState
+    _connectivitySubscription = _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
+    initConnectivity().whenComplete(() => {
+      movePage()
+    });
     super.initState();
-
   }
   @override
   Widget build(BuildContext context) {
