@@ -48,5 +48,5 @@ app.*.map.json
 #custom ignore
 lib/pages/detals_page/viewmodel/detail_controller.freezed.dart
 lib/pages/signup_page/viewmodels/signup_state.freezed.dart
-.fvm/flutter_sdk
+.fvm
 *.freezed.dart

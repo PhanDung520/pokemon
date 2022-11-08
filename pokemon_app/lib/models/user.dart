@@ -1,10 +1,17 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:flutter/foundation.dart';
+part 'user.freezed.dart';
+part 'user.g.dart';
 
-class User{
-  String name;
-  String password;
-  int userId;
-  String nameDisplay;
 
-  User(this.name, this.password, this.userId, this.nameDisplay);
-
+@freezed
+class User with _$User{
+  const factory User({
+    required String username,
+    required String password,
+    required int userId,
+    required String nameDisplay
+  }) = _User;
+  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 }
+
