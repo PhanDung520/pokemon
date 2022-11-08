@@ -34,6 +34,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           scaffoldBackgroundColor: const Color(0xffE8E8E8)
       ),
+      //test commit
       home: const SplashScreen(),
     );
   }
